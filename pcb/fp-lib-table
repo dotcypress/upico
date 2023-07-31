@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "@jb")(type "KiCad")(uri "${KIPRJMOD}/jb-lib/@jb.pretty")(options "")(descr ""))
+  (lib (name "@upico")(type "KiCad")(uri "${KIPRJMOD}")(options "")(descr ""))
+)

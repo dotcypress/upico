@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "@jb")(type "KiCad")(uri "${KIPRJMOD}/jb-lib/@jb.kicad_sym")(options "")(descr ""))
+  (lib (name "@upico")(type "KiCad")(uri "${KIPRJMOD}/upico.kicad_sym")(options "")(descr ""))
+)
