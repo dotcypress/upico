@@ -45,7 +45,7 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.128
+          "min_clearance": 0.131
         }
       },
       "diff_pair_dimensions": [
@@ -113,16 +113,16 @@
         "max_error": 0.005,
         "min_clearance": 0.13999999999999999,
         "min_connection": 0.0,
-        "min_copper_edge_clearance": 0.381,
+        "min_copper_edge_clearance": 0.19999999999999998,
         "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.25,
         "min_microvia_diameter": 0.39999999999999997,
-        "min_microvia_drill": 0.3,
+        "min_microvia_drill": 0.19999999999999998,
         "min_resolved_spokes": 2,
         "min_silk_clearance": 0.0,
         "min_text_height": 0.7,
         "min_text_thickness": 0.12,
-        "min_through_hole_diameter": 0.3,
+        "min_through_hole_diameter": 0.19999999999999998,
         "min_track_width": 0.13999999999999999,
         "min_via_annular_width": 0.13999999999999999,
         "min_via_diameter": 0.44999999999999996,
@@ -172,6 +172,7 @@
       "track_widths": [
         0.0,
         0.127,
+        0.2,
         0.3
       ],
       "via_dimensions": [
@@ -425,7 +426,7 @@
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
         "line_style": 0,
-        "microvia_diameter": 0.3,
+        "microvia_diameter": 0.2,
         "microvia_drill": 0.1,
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
@@ -437,12 +438,12 @@
       },
       {
         "bus_width": 12,
-        "clearance": 0.16,
+        "clearance": 0.15,
         "diff_pair_gap": 0.3,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.1598,
         "line_style": 0,
-        "microvia_diameter": 0.3,
+        "microvia_diameter": 0.2,
         "microvia_drill": 0.1,
         "name": "MIPI",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
@@ -454,19 +455,19 @@
       },
       {
         "bus_width": 12,
-        "clearance": 0.2,
+        "clearance": 0.15,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
         "line_style": 0,
-        "microvia_diameter": 0.3,
+        "microvia_diameter": 0.2,
         "microvia_drill": 0.1,
         "name": "Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3,
-        "via_diameter": 0.7,
-        "via_drill": 0.3,
+        "track_width": 0.2,
+        "via_diameter": 0.5,
+        "via_drill": 0.2,
         "wire_width": 6
       },
       {

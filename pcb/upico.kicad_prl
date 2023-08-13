@@ -5,7 +5,8 @@
     "auto_track_width": true,
     "hidden_netclasses": [],
     "hidden_nets": [
-      "GND"
+      "/I2C_SDA",
+      "/I2C_SCL"
     ],
     "high_contrast_mode": 1,
     "net_color_mode": 1,
@@ -66,7 +67,7 @@
       39,
       40
     ],
-    "visible_layers": "000f075_8000000d",
+    "visible_layers": "000f1ff_8000000d",
     "zone_display_mode": 1
   },
   "meta": {
