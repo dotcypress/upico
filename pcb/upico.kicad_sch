@@ -2451,6 +2451,9 @@
   (junction (at 113.03 144.78) (diameter 0) (color 0 0 0 0)
     (uuid 9a76ecf7-9524-4293-8479-8c8df939f81d)
   )
+  (junction (at 237.49 41.91) (diameter 0) (color 0 0 0 0)
+    (uuid 9e8399ab-097b-467a-b90f-ee8926aa319e)
+  )
   (junction (at 146.05 161.29) (diameter 0) (color 0 0 0 0)
     (uuid 9ee52829-36bb-440a-84e5-63759c8f799e)
   )
@@ -2830,6 +2833,10 @@
     (stroke (width 0) (type default))
     (uuid 2a915c12-78f2-43d8-8303-6e23362b6b81)
   )
+  (wire (pts (xy 232.41 58.42) (xy 232.41 52.07))
+    (stroke (width 0) (type default))
+    (uuid 2af9e264-f0f3-40e2-ba9e-9280ba738e7b)
+  )
   (wire (pts (xy 133.35 172.72) (xy 128.27 172.72))
     (stroke (width 0) (type default))
     (uuid 2b335efe-d2b7-4296-935a-ec32baa9948f)
@@ -3066,7 +3073,7 @@
     (stroke (width 0) (type default))
     (uuid 4f861e7c-32af-48f5-ae81-a77d8e3de987)
   )
-  (wire (pts (xy 158.75 224.79) (xy 158.75 231.14))
+  (wire (pts (xy 157.48 227.33) (xy 157.48 231.14))
     (stroke (width 0) (type default))
     (uuid 503eca3f-1bc0-45d8-8ade-8649acf6a4eb)
   )
@@ -3389,6 +3396,10 @@
   (wire (pts (xy 50.8 104.14) (xy 55.88 104.14))
     (stroke (width 0) (type default))
     (uuid 820d7b07-b372-44f5-9f9e-a298b84bd7cd)
+  )
+  (wire (pts (xy 232.41 41.91) (xy 237.49 41.91))
+    (stroke (width 0) (type default))
+    (uuid 8263cbb6-44c2-4803-9ed3-c1d852822524)
   )
   (wire (pts (xy 179.07 55.88) (xy 176.53 55.88))
     (stroke (width 0) (type default))
@@ -4086,6 +4097,10 @@
     (stroke (width 0) (type default))
     (uuid f1efcfad-274a-43dc-a533-e465c13600aa)
   )
+  (wire (pts (xy 232.41 44.45) (xy 232.41 41.91))
+    (stroke (width 0) (type default))
+    (uuid f2788d16-a6e6-4cea-b56a-f53dabb427fe)
+  )
   (wire (pts (xy 163.83 45.72) (xy 146.05 45.72))
     (stroke (width 0) (type default))
     (uuid f45f4b89-fa35-4dca-b2be-4dd5c73ead68)
@@ -4134,7 +4149,7 @@
     (stroke (width 0) (type default))
     (uuid f9314f05-186b-44d1-9903-68b83db717c1)
   )
-  (wire (pts (xy 158.75 231.14) (xy 153.67 231.14))
+  (wire (pts (xy 157.48 231.14) (xy 153.67 231.14))
     (stroke (width 0) (type default))
     (uuid f987c1a4-123a-4939-9480-7966681b86d1)
   )
@@ -4807,7 +4822,7 @@
   (symbol (lib_id "power:VDD") (at 383.54 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1747fcbb-8b43-499d-8ecc-68fab6f8eece)
-    (property "Reference" "#PWR050" (at 383.54 165.1 0)
+    (property "Reference" "#PWR051" (at 383.54 165.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VDD" (at 383.54 156.21 0)
@@ -4823,7 +4838,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR050") (unit 1)
+          (reference "#PWR051") (unit 1)
         )
       )
     )
@@ -5009,7 +5024,7 @@
   (symbol (lib_id "power:+5VD") (at 383.54 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 276e54b1-5a97-4f27-bb18-4cc2d9fe5857)
-    (property "Reference" "#PWR048" (at 383.54 106.68 0)
+    (property "Reference" "#PWR049" (at 383.54 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5VD" (at 383.54 97.79 0)
@@ -5025,7 +5040,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR048") (unit 1)
+          (reference "#PWR049") (unit 1)
         )
       )
     )
@@ -5034,7 +5049,7 @@
   (symbol (lib_id "power:+3.3V") (at 318.77 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 28b2549a-5adb-4d3c-b3b2-ee707777eb42)
-    (property "Reference" "#PWR032" (at 318.77 165.1 0)
+    (property "Reference" "#PWR033" (at 318.77 165.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 318.77 157.48 0)
@@ -5050,7 +5065,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR032") (unit 1)
+          (reference "#PWR033") (unit 1)
         )
       )
     )
@@ -5089,7 +5104,7 @@
   (symbol (lib_id "power:GND") (at 237.49 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 2c22fe62-0645-4bc4-8257-a0c0367ff093)
-    (property "Reference" "#PWR023" (at 237.49 100.33 0)
+    (property "Reference" "#PWR024" (at 237.49 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 237.49 99.06 0)
@@ -5105,7 +5120,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR023") (unit 1)
+          (reference "#PWR024") (unit 1)
         )
       )
     )
@@ -5114,7 +5129,7 @@
   (symbol (lib_id "power:GND") (at 356.87 194.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 2da2e88f-5fff-45d4-ae2f-633ce42e1283)
-    (property "Reference" "#PWR041" (at 356.87 200.66 0)
+    (property "Reference" "#PWR042" (at 356.87 200.66 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 356.87 199.39 0)
@@ -5130,7 +5145,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR041") (unit 1)
+          (reference "#PWR042") (unit 1)
         )
       )
     )
@@ -5139,7 +5154,7 @@
   (symbol (lib_id "power:+5V") (at 318.77 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2dec8f3e-06c5-4997-894a-d57e665d5680)
-    (property "Reference" "#PWR030" (at 318.77 106.68 0)
+    (property "Reference" "#PWR031" (at 318.77 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 318.77 99.06 0)
@@ -5155,7 +5170,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR030") (unit 1)
+          (reference "#PWR031") (unit 1)
         )
       )
     )
@@ -5194,7 +5209,7 @@
   (symbol (lib_id "Device:C") (at 383.54 71.12 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3086eec4-96c4-44e5-83b5-a711e360fb86)
-    (property "Reference" "C20" (at 387.35 69.85 0)
+    (property "Reference" "C21" (at 387.35 69.85 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10uF" (at 387.35 72.39 0)
@@ -5211,7 +5226,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C20") (unit 1)
+          (reference "C21") (unit 1)
         )
       )
     )
@@ -5220,7 +5235,7 @@
   (symbol (lib_id "power:GND") (at 318.77 195.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 31bb20e6-e573-4727-bf04-f2c5c11b1f9b)
-    (property "Reference" "#PWR033" (at 318.77 201.93 0)
+    (property "Reference" "#PWR034" (at 318.77 201.93 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 318.77 200.66 0)
@@ -5236,7 +5251,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR033") (unit 1)
+          (reference "#PWR034") (unit 1)
         )
       )
     )
@@ -5325,7 +5340,7 @@
     (property "Reference" "R6" (at 105.41 63.5 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "200R" (at 110.49 63.5 90)
+    (property "Value" "DNP" (at 110.49 63.5 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 107.95 67.818 90)
@@ -5374,7 +5389,7 @@
   (symbol (lib_id "power:GND") (at 318.77 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3d99eb7d-5014-42ec-acbd-f526c4a943ff)
-    (property "Reference" "#PWR029" (at 318.77 85.09 0)
+    (property "Reference" "#PWR030" (at 318.77 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 318.77 83.82 0)
@@ -5390,7 +5405,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR029") (unit 1)
+          (reference "#PWR030") (unit 1)
         )
       )
     )
@@ -5399,7 +5414,7 @@
   (symbol (lib_id "power:+3.3V") (at 342.9 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3f5eac80-6390-4b01-8438-92ab7c61cd4c)
-    (property "Reference" "#PWR037" (at 342.9 106.68 0)
+    (property "Reference" "#PWR038" (at 342.9 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 342.9 99.06 0)
@@ -5415,7 +5430,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR037") (unit 1)
+          (reference "#PWR038") (unit 1)
         )
       )
     )
@@ -5427,7 +5442,7 @@
     (property "Reference" "R12" (at 134.62 228.6 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "470R" (at 139.7 228.6 90)
+    (property "Value" "510R" (at 139.7 228.6 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 138.43 229.362 90)
@@ -5552,7 +5567,7 @@
   (symbol (lib_id "power:GND") (at 326.39 135.89 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4db1966a-eab4-4d2b-a1df-93377547818a)
-    (property "Reference" "#PWR035" (at 326.39 142.24 0)
+    (property "Reference" "#PWR036" (at 326.39 142.24 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 326.39 140.97 0)
@@ -5568,7 +5583,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR035") (unit 1)
+          (reference "#PWR036") (unit 1)
         )
       )
     )
@@ -5577,7 +5592,7 @@
   (symbol (lib_id "power:GND") (at 276.86 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4f174704-b2b0-42a7-8717-987b128501b2)
-    (property "Reference" "#PWR026" (at 276.86 100.33 0)
+    (property "Reference" "#PWR027" (at 276.86 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 276.86 99.06 0)
@@ -5593,7 +5608,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR026") (unit 1)
+          (reference "#PWR027") (unit 1)
         )
       )
     )
@@ -5602,7 +5617,7 @@
   (symbol (lib_id "Device:C") (at 326.39 127 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 505a7d4d-d36e-46d7-82ea-52c1b348a3a5)
-    (property "Reference" "C18" (at 330.2 126.365 0)
+    (property "Reference" "C19" (at 330.2 126.365 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100nF" (at 330.2 128.905 0)
@@ -5619,7 +5634,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C18") (unit 1)
+          (reference "C19") (unit 1)
         )
       )
     )
@@ -5678,7 +5693,7 @@
   (symbol (lib_id "power:GND") (at 383.54 134.62 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 553b3a2c-402d-4df2-af14-ac6a609bd9e3)
-    (property "Reference" "#PWR049" (at 383.54 140.97 0)
+    (property "Reference" "#PWR050" (at 383.54 140.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 383.54 139.7 0)
@@ -5694,7 +5709,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR049") (unit 1)
+          (reference "#PWR050") (unit 1)
         )
       )
     )
@@ -5703,7 +5718,7 @@
   (symbol (lib_id "power:GND") (at 326.39 195.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5d6f1fb0-c3ee-4f7c-9090-0246c6e54001)
-    (property "Reference" "#PWR036" (at 326.39 201.93 0)
+    (property "Reference" "#PWR037" (at 326.39 201.93 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 326.39 200.66 0)
@@ -5719,7 +5734,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR036") (unit 1)
+          (reference "#PWR037") (unit 1)
         )
       )
     )
@@ -5810,7 +5825,7 @@
   (symbol (lib_id "Device:C") (at 383.54 128.27 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6085c6f4-d501-468f-8e4e-0bf6968a617d)
-    (property "Reference" "C21" (at 387.35 127 0)
+    (property "Reference" "C22" (at 387.35 127 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10uF" (at 387.35 129.54 0)
@@ -5827,7 +5842,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C21") (unit 1)
+          (reference "C22") (unit 1)
         )
       )
     )
@@ -5839,7 +5854,7 @@
     (property "Reference" "C6" (at 125.73 151.13 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "1uF" (at 125.73 153.67 0)
+    (property "Value" "4.7uF" (at 125.73 153.67 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 122.8852 156.21 0)
@@ -5862,7 +5877,7 @@
   (symbol (lib_id "power:GND") (at 318.77 135.89 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 67462473-e8b1-414e-ad7f-74debd42d83e)
-    (property "Reference" "#PWR031" (at 318.77 142.24 0)
+    (property "Reference" "#PWR032" (at 318.77 142.24 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 318.77 140.97 0)
@@ -5878,7 +5893,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR031") (unit 1)
+          (reference "#PWR032") (unit 1)
         )
       )
     )
@@ -5887,7 +5902,7 @@
   (symbol (lib_id "power:+3.3V") (at 346.71 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 71144071-9f68-4966-a997-525d187689b7)
-    (property "Reference" "#PWR039" (at 346.71 44.45 0)
+    (property "Reference" "#PWR040" (at 346.71 44.45 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 346.71 36.83 0)
@@ -5903,7 +5918,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR039") (unit 1)
+          (reference "#PWR040") (unit 1)
         )
       )
     )
@@ -5912,7 +5927,7 @@
   (symbol (lib_id "power:+3.3V") (at 294.64 179.07 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7319a33b-5b5e-4c25-bc47-7266d0e9b09e)
-    (property "Reference" "#PWR027" (at 294.64 182.88 0)
+    (property "Reference" "#PWR028" (at 294.64 182.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 294.64 175.26 0)
@@ -5928,7 +5943,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR027") (unit 1)
+          (reference "#PWR028") (unit 1)
         )
       )
     )
@@ -5937,7 +5952,7 @@
   (symbol (lib_id "Device:C") (at 326.39 69.85 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 73ca9fa1-5383-4550-bd54-8e791d195afc)
-    (property "Reference" "C17" (at 330.2 69.215 0)
+    (property "Reference" "C18" (at 330.2 69.215 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100nF" (at 330.2 71.755 0)
@@ -5954,7 +5969,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C17") (unit 1)
+          (reference "C18") (unit 1)
         )
       )
     )
@@ -6088,7 +6103,7 @@
     (property "Reference" "C5" (at 90.17 151.13 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "1uF" (at 90.17 153.67 0)
+    (property "Value" "4.7uF" (at 90.17 153.67 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 87.3252 156.21 0)
@@ -6172,7 +6187,7 @@
   (symbol (lib_id "power:GND") (at 360.68 77.47 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 7c48550d-f706-4513-a7a5-ffa61cce00dc)
-    (property "Reference" "#PWR042" (at 360.68 83.82 0)
+    (property "Reference" "#PWR043" (at 360.68 83.82 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 360.68 82.55 0)
@@ -6188,7 +6203,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR042") (unit 1)
+          (reference "#PWR043") (unit 1)
         )
       )
     )
@@ -6219,6 +6234,31 @@
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
           (reference "U5") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:GND") (at 232.41 58.42 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid 7fe40ba4-438c-40ff-a379-3e6bb812f9fe)
+    (property "Reference" "#PWR023" (at 232.41 64.77 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 232.41 63.5 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 232.41 58.42 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 232.41 58.42 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid d1cfcdd9-5403-4896-b4d1-345bcd5a073c))
+    (instances
+      (project "upico"
+        (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
+          (reference "#PWR023") (unit 1)
         )
       )
     )
@@ -6351,12 +6391,12 @@
   )
 
   (symbol (lib_id "Device:R") (at 373.38 71.12 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (in_bom yes) (on_board yes) (dnp no)
     (uuid 93e34e1b-fae3-43d6-8aa8-0e819265b340)
     (property "Reference" "R25" (at 375.92 69.85 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "50K" (at 375.92 72.39 0)
+    (property "Value" "47K" (at 375.92 72.39 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 371.602 71.12 90)
@@ -6379,7 +6419,7 @@
   (symbol (lib_id "power:+5V") (at 318.77 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 95c46747-54dc-41e5-b2a3-6a52d5857d1e)
-    (property "Reference" "#PWR028" (at 318.77 44.45 0)
+    (property "Reference" "#PWR029" (at 318.77 44.45 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 318.77 36.83 0)
@@ -6395,7 +6435,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR028") (unit 1)
+          (reference "#PWR029") (unit 1)
         )
       )
     )
@@ -6430,7 +6470,7 @@
   (symbol (lib_id "power:GND") (at 373.38 77.47 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9b4995be-3262-415e-8731-f2b12d7c3cfc)
-    (property "Reference" "#PWR045" (at 373.38 83.82 0)
+    (property "Reference" "#PWR046" (at 373.38 83.82 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 373.38 82.55 0)
@@ -6446,25 +6486,25 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR045") (unit 1)
+          (reference "#PWR046") (unit 1)
         )
       )
     )
   )
 
-  (symbol (lib_id "power:VDD") (at 158.75 224.79 0) (unit 1)
+  (symbol (lib_id "power:VDD") (at 157.48 227.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a191313f-1b98-4bbe-92ba-f9e41e3c549c)
-    (property "Reference" "#PWR016" (at 158.75 228.6 0)
+    (property "Reference" "#PWR016" (at 157.48 231.14 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "VDD" (at 156.21 220.98 0)
+    (property "Value" "VDD" (at 157.48 223.52 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 158.75 224.79 0)
+    (property "Footprint" "" (at 157.48 227.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 158.75 224.79 0)
+    (property "Datasheet" "" (at 157.48 227.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 01be6da9-ee35-4ace-8408-808b31ad670b))
@@ -6506,7 +6546,7 @@
   (symbol (lib_id "Device:C") (at 318.77 69.85 0) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a90a3546-9ef7-40c9-ba41-5807279bcf60)
-    (property "Reference" "C14" (at 314.96 69.215 0)
+    (property "Reference" "C15" (at 314.96 69.215 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10uF" (at 314.96 71.755 0)
@@ -6523,7 +6563,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C14") (unit 1)
+          (reference "C15") (unit 1)
         )
       )
     )
@@ -6532,7 +6572,7 @@
   (symbol (lib_id "power:+3.3V") (at 342.9 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ad635bec-5edb-41ad-a067-1f9117a910a5)
-    (property "Reference" "#PWR038" (at 342.9 165.1 0)
+    (property "Reference" "#PWR039" (at 342.9 165.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 342.9 157.48 0)
@@ -6548,7 +6588,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR038") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
     )
@@ -6715,7 +6755,7 @@
   (symbol (lib_id "power:GND") (at 370.84 134.62 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b69b5281-fb55-4944-b859-0c27572a3d8e)
-    (property "Reference" "#PWR043" (at 370.84 140.97 0)
+    (property "Reference" "#PWR044" (at 370.84 140.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 370.84 139.7 0)
@@ -6731,7 +6771,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR043") (unit 1)
+          (reference "#PWR044") (unit 1)
         )
       )
     )
@@ -6766,7 +6806,7 @@
   (symbol (lib_id "power:GND") (at 265.43 189.23 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid bab11893-b517-40ab-b35c-fb0630ead256)
-    (property "Reference" "#PWR025" (at 265.43 195.58 0)
+    (property "Reference" "#PWR026" (at 265.43 195.58 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 265.43 194.31 0)
@@ -6782,7 +6822,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR025") (unit 1)
+          (reference "#PWR026") (unit 1)
         )
       )
     )
@@ -6817,7 +6857,7 @@
   (symbol (lib_id "power:GND") (at 326.39 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c07631ff-521c-4273-9732-3b0b5fa715e8)
-    (property "Reference" "#PWR034" (at 326.39 85.09 0)
+    (property "Reference" "#PWR035" (at 326.39 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 326.39 83.82 0)
@@ -6833,7 +6873,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR034") (unit 1)
+          (reference "#PWR035") (unit 1)
         )
       )
     )
@@ -6842,7 +6882,7 @@
   (symbol (lib_id "power:GND") (at 370.84 194.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c17d4e46-17b5-472f-a4ab-3552bc30364b)
-    (property "Reference" "#PWR044" (at 370.84 200.66 0)
+    (property "Reference" "#PWR045" (at 370.84 200.66 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 370.84 199.39 0)
@@ -6858,7 +6898,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR044") (unit 1)
+          (reference "#PWR045") (unit 1)
         )
       )
     )
@@ -7047,7 +7087,7 @@
   (symbol (lib_id "Device:C") (at 326.39 186.69 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid cfc33442-04bf-40a5-b6f8-1df66292acca)
-    (property "Reference" "C19" (at 330.2 186.055 0)
+    (property "Reference" "C20" (at 330.2 186.055 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100nF" (at 330.2 188.595 0)
@@ -7064,7 +7104,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C19") (unit 1)
+          (reference "C20") (unit 1)
         )
       )
     )
@@ -7126,7 +7166,7 @@
   (symbol (lib_id "power:GND") (at 383.54 77.47 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d049d284-a981-4dad-9a83-8c04bdf7aadd)
-    (property "Reference" "#PWR047" (at 383.54 83.82 0)
+    (property "Reference" "#PWR048" (at 383.54 83.82 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 383.54 82.55 0)
@@ -7142,7 +7182,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR047") (unit 1)
+          (reference "#PWR048") (unit 1)
         )
       )
     )
@@ -7176,7 +7216,7 @@
   (symbol (lib_id "power:VBUS") (at 259.08 36.83 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d52f5c18-d1b5-45e5-b6cb-9c5c31b37718)
-    (property "Reference" "#PWR024" (at 259.08 40.64 0)
+    (property "Reference" "#PWR025" (at 259.08 40.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 259.08 31.75 0)
@@ -7192,7 +7232,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR024") (unit 1)
+          (reference "#PWR025") (unit 1)
         )
       )
     )
@@ -7303,7 +7343,7 @@
   (symbol (lib_id "Device:C") (at 318.77 186.69 0) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d9b9cf15-5d85-4c31-a6a4-8f77385c9a87)
-    (property "Reference" "C16" (at 314.96 186.055 0)
+    (property "Reference" "C17" (at 314.96 186.055 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10uF" (at 314.96 188.595 0)
@@ -7320,7 +7360,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C16") (unit 1)
+          (reference "C17") (unit 1)
         )
       )
     )
@@ -7412,6 +7452,32 @@
     )
   )
 
+  (symbol (lib_id "Device:C") (at 232.41 48.26 0) (mirror x) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid db9e1ecc-d36c-4509-abf5-1212b3571a3f)
+    (property "Reference" "C14" (at 228.6 47.625 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Value" "10uF" (at 228.6 50.165 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 233.3752 44.45 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 232.41 48.26 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 8e183b84-308c-43a8-9f51-925a605e0fd8))
+    (pin "2" (uuid 49fe1103-4070-4e9f-b6a5-1a28b0ab762f))
+    (instances
+      (project "upico"
+        (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
+          (reference "C14") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Device:R") (at 342.9 109.22 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid dc3c8eaa-d0ea-4999-ba90-656f8fc0a84d)
@@ -7467,7 +7533,7 @@
   (symbol (lib_id "power:GND") (at 356.87 134.62 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid de8fa652-2173-4fbf-9af4-d48a417e5a6d)
-    (property "Reference" "#PWR040" (at 356.87 140.97 0)
+    (property "Reference" "#PWR041" (at 356.87 140.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 356.87 139.7 0)
@@ -7483,7 +7549,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR040") (unit 1)
+          (reference "#PWR041") (unit 1)
         )
       )
     )
@@ -7597,7 +7663,7 @@
   (symbol (lib_id "power:VBUS") (at 383.54 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e70fad96-b0d2-4527-9e67-0533dd6f219c)
-    (property "Reference" "#PWR046" (at 383.54 44.45 0)
+    (property "Reference" "#PWR047" (at 383.54 44.45 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (at 383.54 35.56 0)
@@ -7613,7 +7679,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR046") (unit 1)
+          (reference "#PWR047") (unit 1)
         )
       )
     )
@@ -7698,7 +7764,7 @@
   (symbol (lib_id "power:GND") (at 383.54 194.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e989f9b9-5001-4e47-9f4d-fe22c5f6e555)
-    (property "Reference" "#PWR051" (at 383.54 200.66 0)
+    (property "Reference" "#PWR052" (at 383.54 200.66 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 383.54 199.39 0)
@@ -7714,7 +7780,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "#PWR051") (unit 1)
+          (reference "#PWR052") (unit 1)
         )
       )
     )
@@ -7723,7 +7789,7 @@
   (symbol (lib_id "Device:C") (at 383.54 187.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ea407783-8579-4b00-ab96-ad5eb9f6e652)
-    (property "Reference" "C22" (at 387.35 186.69 0)
+    (property "Reference" "C23" (at 387.35 186.69 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10uF" (at 387.35 189.23 0)
@@ -7740,7 +7806,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C22") (unit 1)
+          (reference "C23") (unit 1)
         )
       )
     )
@@ -7934,10 +8000,10 @@
   (symbol (lib_id "Device:R") (at 107.95 68.58 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid f2266a88-f5c7-4d61-a299-2384a5fc4e55)
-    (property "Reference" "R7" (at 106.045 71.12 90)
+    (property "Reference" "R7" (at 105.41 71.12 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "200R" (at 110.49 71.12 90)
+    (property "Value" "DNP" (at 110.49 71.12 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 107.95 66.802 90)
@@ -7985,7 +8051,7 @@
   (symbol (lib_id "Device:C") (at 318.77 127 0) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid f52aefc6-e923-4233-a16e-0083cccfdf14)
-    (property "Reference" "C15" (at 314.96 126.365 0)
+    (property "Reference" "C16" (at 314.96 126.365 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10uF" (at 314.96 128.905 0)
@@ -8002,7 +8068,7 @@
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
-          (reference "C15") (unit 1)
+          (reference "C16") (unit 1)
         )
       )
     )

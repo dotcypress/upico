@@ -4,10 +4,7 @@
     "active_layer_preset": "",
     "auto_track_width": true,
     "hidden_netclasses": [],
-    "hidden_nets": [
-      "/I2C_SDA",
-      "/I2C_SCL"
-    ],
+    "hidden_nets": [],
     "high_contrast_mode": 1,
     "net_color_mode": 1,
     "opacity": {
@@ -64,10 +61,11 @@
       34,
       35,
       36,
+      37,
       39,
       40
     ],
-    "visible_layers": "000f1ff_8000000d",
+    "visible_layers": "ffcffff_ffffffed",
     "zone_display_mode": 1
   },
   "meta": {
