@@ -1,0 +1,15 @@
+[package]
+name = "upico"
+version = "0.0.1"
+authors = ["Vitaly Domnikov <oss@vitaly.codes>"]
+repository = "https://github.com/dotcypress/upico"
+description = "uPico control app"
+license = "MIT/Apache-2.0"
+readme = "README.md"
+edition = "2021"
+
+[dependencies]
+clap = "4.4.6"
+gpio-cdev = "0.6.0"
+rmp-serde = "1.1.2"
+serde = { version = "1.0.188", features = ["serde_derive"] }

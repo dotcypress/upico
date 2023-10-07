@@ -1,0 +1,9 @@
+[Unit]
+Description=upico
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/upico service
+
+[Install]
+WantedBy=multi-user.target
