@@ -46,6 +46,7 @@ impl Gpio {
     }
 
     pub fn reset_pico(&mut self, boot: bool) {
+        self.power_on(PowerLine::Vdd);
         self.pico.set_values(&[0, !boot as _]).ok();
         thread::sleep(Duration::from_millis(100));
         self.pico.set_values(&[1, 1]).ok();
@@ -80,15 +81,15 @@ impl Gpio {
         PowerReport {
             aux: PowerState {
                 on: self.aux_en.get_value().unwrap_or_default() != 0,
-                ocp: ocp[0] != 0,
+                ocp: ocp[0] == 0,
             },
             vdd: PowerState {
                 on: self.vdd_en.get_value().unwrap_or_default() != 0,
-                ocp: ocp[1] != 0,
+                ocp: ocp[1] == 0,
             },
             usb: PowerState {
                 on: self.usb_en.get_value().unwrap_or_default() != 0,
-                ocp: ocp[2] != 0,
+                ocp: ocp[2] == 0,
             },
         }
     }

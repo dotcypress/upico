@@ -2562,7 +2562,6 @@
   (no_connect (at 128.27 218.44) (uuid ad97a1ba-6c66-4984-a335-cb927d3888ce))
   (no_connect (at 128.27 228.6) (uuid db6c24ea-b929-48ce-84c3-873f65079f75))
   (no_connect (at 77.47 233.68) (uuid e1474f50-82a4-4ca7-96f8-1f8189aef045))
-  (no_connect (at 308.61 30.48) (uuid eab61846-9611-4815-aa4a-34b7219382f0))
   (no_connect (at 261.62 81.28) (uuid ef5dcecc-3bb3-44b8-88e4-6bbae4154fcb))
 
   (wire (pts (xy 35.56 71.12) (xy 55.88 71.12))
