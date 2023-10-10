@@ -7,10 +7,11 @@
 ## Features
 
 * uConsole speakers support
-* Type-C Port (USB 2.0) with programmable power switch and overcurrent protection
-* 3.3V and 5V extennal power with programmable switch and overcurrent protection
-* Programmable RP2040 chip
+* Type-C (USB 2.0) port with programmable power switch and overcurrent protection
+* 3.3V and 5V external power with programmable switch and overcurrent protection
+* Host programmable RP2040 mcu
 * Double-Double PMOD compatible connector
+* LED
 
 ## License
 
