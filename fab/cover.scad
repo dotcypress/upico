@@ -1,4 +1,4 @@
-$fn=64;
+$fn=128;
 epsilon=0.01;
 
 module cover() {
@@ -11,7 +11,7 @@ module cover() {
         cube(size=[12, 10, 2.5], center=true);
     }
 
-    translate([5.5, 2.5 + epsilon, 0]) 
+    translate([5.5, 2.5+epsilon, 0]) 
       cube(size=[44, 5, 5], center=true);
 
     translate([-24.5, 1.8, 0]) hull() {
