@@ -6234,10 +6234,10 @@
   (gr_text "Pullups   " (at 62.8142 121.2596) (layer "F.SilkS" knockout) (tstamp c6531fc9-1623-46ca-baac-77c4f0d6600b)
     (effects (font (size 0.8 0.8) (thickness 0.15) bold) (justify left bottom))
   )
-  (gr_text "A-04/06   " (at 62.7888 112.961799) (layer "F.SilkS" knockout) (tstamp c7b887b0-9c62-497e-b5c2-bd9dc8fe502a)
+  (gr_text "A04/A06   " (at 62.7888 112.961799) (layer "F.SilkS" knockout) (tstamp c7b887b0-9c62-497e-b5c2-bd9dc8fe502a)
     (effects (font (size 0.8 0.8) (thickness 0.15) bold) (justify left bottom))
   )
-  (gr_text "R-01    " (at 62.8142 118.4148) (layer "F.SilkS" knockout) (tstamp d0788985-f076-4320-a2f3-5a6b0c6acd27)
+  (gr_text "R01/CM3" (at 62.8142 118.4148) (layer "F.SilkS" knockout) (tstamp d0788985-f076-4320-a2f3-5a6b0c6acd27)
     (effects (font (size 0.8 0.8) (thickness 0.15) bold) (justify left bottom))
   )
 

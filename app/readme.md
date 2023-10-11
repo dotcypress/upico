@@ -9,8 +9,8 @@
 ## Installation
 
 1. `apt-get install udisks2`
-2. `sudo cp target/release/upico /usr/local/bin/`
-3. `sudo cp upico.service /etc/systemd/system/`
+2. `sudo cp app/target/release/upico /usr/local/bin/`
+3. `sudo cp drivers/r-01/upico.service /etc/systemd/system/`
 4. `sudo systemctl start upico`
 5. `sudo systemctl enable upico`
 

@@ -1,5 +1,5 @@
 use app::*;
-use clap::*;
+use clap::{builder::PossibleValue, *};
 use gpio::*;
 use service::*;
 use std::*;
@@ -25,13 +25,34 @@ fn main() {
 fn cli() -> Command {
     let mount_arg = arg!(mount: -m "Mount Pico disk");
     let dev_arg = arg!(-d <PICO_DEV> "Path to Pico disk device").default_value("/dev/sda1");
-    let line_arg = arg!(<LINE> "Power line (AUX, VDD, USB)").required(true);
+    let line_arg = arg!(<LINE> "Power line")
+        .value_parser([
+            PossibleValue::new("aux"),
+            PossibleValue::new("vdd"),
+            PossibleValue::new("usb"),
+        ])
+        .required(true);
     Command::new("upico")
         .about("uPico control app")
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .subcommand_required(true)
         .arg_required_else_help(true)
+        .subcommand(
+            Command::new("service")
+                .about("Start service")
+                .arg(
+                    arg!(<CORE> "Core module")
+                        .value_parser([
+                            // PossibleValue::new("a04"),
+                            // PossibleValue::new("a06"),
+                            // PossibleValue::new("cm4"),
+                            PossibleValue::new("r01"),
+                        ])
+                        .required(true),
+                )
+                .arg(arg!(-c [CHIP] "GPIO chip device").default_value("/dev/gpiochip0")),
+        )
         .subcommand(Command::new("reset").about("Reset Pico"))
         .subcommand(
             Command::new("boot")
@@ -60,11 +81,6 @@ fn cli() -> Command {
                 .subcommand(Command::new("cycle").about("Power cycle").arg(line_arg))
                 .subcommand(Command::new("status").about("Power status")),
         )
-        .subcommand(
-            Command::new("service")
-                .about("Start service")
-                .arg(arg!([CHIP] "GPIO chip device").default_value("/dev/gpiochip0")),
-        )
 }
 
 fn print_power_state(line: &str, state: PowerState) {
@@ -86,7 +102,15 @@ fn run() -> AppResult {
     match cli().get_matches().subcommand() {
         Some(("service", cmd)) => {
             let gpio_chip = cmd.get_one::<String>("CHIP").unwrap();
-            Service::start(gpio_chip)?;
+            let core = cmd.get_one::<String>("CORE").unwrap();
+            let pins = match core.to_lowercase().as_str() {
+                "a04" => A04_PINS,
+                "a06" => A06_PINS,
+                "cm4" => CM4_PINS,
+                "r01" => R01_PINS,
+                _ => unreachable!(),
+            };
+            Service::start(gpio_chip, pins)?;
         }
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;

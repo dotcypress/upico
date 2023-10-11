@@ -20,10 +20,13 @@ pub fn mount_pico_dev(disk: &str) -> Result<String, AppError> {
         .output()
         .map_err(AppError::IoError)?;
 
-    String::from_utf8(output.stdout)
-        .map_err(AppError::DecodeError)?
-        .split(" at ")
-        .last()
-        .map(|s| s.trim().to_owned())
-        .ok_or(AppError::MountFailed)
+    let res = String::from_utf8(output.stdout).map_err(AppError::DecodeError)?;
+    if res.starts_with("Error") {
+        Err(AppError::MountFailed)
+    } else {
+        res.split(" at ")
+            .last()
+            .map(|s| s.trim().to_owned())
+            .ok_or(AppError::MountFailed)
+    }
 }

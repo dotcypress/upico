@@ -3,7 +3,7 @@ Description=upico
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/upico service
+ExecStart=/usr/local/bin/upico service r01
 
 [Install]
 WantedBy=multi-user.target

@@ -2,14 +2,14 @@
 
 [Clockwork uConsole](https://www.clockworkpi.com/uconsole) expansion card.
 
-<img width="500" src="pcb/fab/upico.png" />
+<img width="500" src="fab/upico.png" />
 
 ## Features
 
 * uConsole speakers support
 * Type-C (USB 2.0) port with programmable power switch and overcurrent protection
-* 3.3V and 5V external power with programmable switch and overcurrent protection
-* Host programmable RP2040 mcu
+* 3.3V and 5V external power out with programmable switch and overcurrent protection
+* RP2040 microcontroller
 * Double-Double PMOD compatible connector
 * LED
 

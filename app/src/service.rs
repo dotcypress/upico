@@ -64,7 +64,7 @@ pub struct Service {
 impl Service {
     const SOCKET: &str = "/tmp/upico.sock";
 
-    pub fn start(chip: &str) -> AppResult {
+    pub fn start(chip: &str, pins: GpioPins) -> AppResult {
         let err = UnixStream::connect(Service::SOCKET).map_err(|err| err.kind());
         if let Err(ErrorKind::ConnectionRefused) = err {
             fs::remove_file(Service::SOCKET).map_err(AppError::ServiceError)?
@@ -76,7 +76,7 @@ impl Service {
         perms.set_mode(0o766);
         fs::set_permissions(Service::SOCKET, perms).map_err(AppError::IoError)?;
 
-        let gpio = Gpio::new(chip).map_err(AppError::GpioError)?;
+        let gpio = Gpio::new(chip, pins).map_err(AppError::GpioError)?;
         let mut service = Self { gpio };
 
         let mut scratch = [0; 64];
