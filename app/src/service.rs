@@ -62,7 +62,7 @@ pub struct Service {
 }
 
 impl Service {
-    const SOCKET: &str = "/tmp/upico.sock";
+    const SOCKET: &'static str = "/tmp/upico.sock";
 
     pub fn start(chip: &str, pins: GpioPins) -> AppResult {
         let err = UnixStream::connect(Service::SOCKET).map_err(|err| err.kind());
@@ -100,7 +100,7 @@ impl Service {
 
         let packet = to_vec(&req).unwrap();
         stream.write(&packet).map_err(AppError::IoError)?;
-        thread::sleep(Duration::from_millis(100));
+        thread::sleep(Duration::from_millis(250));
 
         let mut scratch = [0; 64];
         let n = stream.read(&mut scratch).map_err(AppError::ServiceError)?;

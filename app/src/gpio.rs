@@ -57,8 +57,9 @@ impl Gpio {
     }
 
     pub fn reset_pico(&mut self, boot: bool) {
-        self.power_on(PowerLine::Vdd);
         self.pico.set_values(&[0, !boot as _]).ok();
+        thread::sleep(Duration::from_millis(100));
+        self.pico.set_values(&[1, !boot as _]).ok();
         thread::sleep(Duration::from_millis(100));
         self.pico.set_values(&[1, 1]).ok();
     }
@@ -126,21 +127,21 @@ pub const R01_PINS: GpioPins = GpioPins {
 };
 
 pub const CM4_PINS: GpioPins = GpioPins {
-    // GPIO38 - gpio6 - 
+    // GPIO38 - gpio6 -
     pico_run: 0,
-    // GPIO37 - gpio27 - 
+    // GPIO37 - gpio27 -
     pico_boot: 0,
-    // GPIO40 - gpio16 - 
+    // GPIO40 - gpio16 -
     aux_en: 0,
-    // GPIO36 - gpio26 - 
+    // GPIO36 - gpio26 -
     vdd_en: 0,
-    // GPIO31 - gpio21 - 
+    // GPIO31 - gpio21 -
     usb_en: 0,
-    // GPIO39 - gpio7 - 
+    // GPIO39 - gpio7 -
     aux_ocp: 0,
-    // GPIO35 - gpio25 - 
+    // GPIO35 - gpio25 -
     vdd_ocp: 0,
-    // GPIO30 - gpio20 - 
+    // GPIO30 - gpio20 -
     usb_ocp: 0,
 };
 
