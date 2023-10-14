@@ -13,6 +13,31 @@ uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expans
 * RP2040 with extenal double-double PMOD compatible connector
 * RP2040 controllable LED
 
+### Pinout
+```
+╔══════╦══════╗
+║ AUX  ║ AUX  ║
+╠══════╬══════╣
+║ VDD  ║ VDD  ║
+║ GND  ║ GND  ║
+║ IO3  ║ IO7  ║
+║ IO2  ║ IO6  ║
+║ IO1  ║ IO5  ║
+║ IO0  ║ IO4  ║
+╠══════╬══════╣
+║ IO27 ║ IO29 ║
+║ IO26 ║ IO28 ║
+║ SDA  ║ SCL  ║
+╠══════╬══════╣
+║ VDD  ║ VDD  ║
+║ GND  ║ GND  ║
+║ IO11 ║ IO15 ║
+║ IO10 ║ IO14 ║
+║ IO9  ║ IO13 ║
+║ IO8  ║ IO12 ║
+╚══════╩══════╝
+```
+
 ## License
 
 Licensed under either of

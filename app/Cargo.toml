@@ -11,6 +11,7 @@ edition = "2021"
 [dependencies]
 clap = "4.4.6"
 gpio-cdev = "0.6.0"
+owo-colors = "3.5.0"
 rmp-serde = "1.1.2"
 serde = { version = "1.0.188", features = ["serde_derive"] }
 

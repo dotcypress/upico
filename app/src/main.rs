@@ -54,6 +54,8 @@ fn cli() -> Command {
         .subcommand(
             Command::new("service")
                 .about("Start service")
+                .hide(true)
+                .arg(arg!(-c [CHIP] "GPIO chip device").default_value("/dev/gpiochip0"))
                 .arg(
                     arg!(<CORE> "Core module")
                         .value_parser([
@@ -63,8 +65,7 @@ fn cli() -> Command {
                             PossibleValue::new("r01"),
                         ])
                         .required(true),
-                )
-                .arg(arg!(-c [CHIP] "GPIO chip device").default_value("/dev/gpiochip0")),
+                ),
         )
         .subcommand(Command::new("reset").about("Reset Pico"))
         .subcommand(
@@ -74,8 +75,9 @@ fn cli() -> Command {
                 .about("Reset Pico and enter USB bootloader"),
         )
         .subcommand(
-            Command::new("flash")
-                .about("Flash microcontroller")
+            Command::new("install")
+                .about("Install firmware to Pico")
+                .arg_required_else_help(true)
                 .arg(arg!(<FIRMWARE> "Path to UF2 firmware file").required(true))
                 .arg(
                     arg!(-p <PICO_PATH> "Path to mounted Pico disk")
@@ -94,6 +96,7 @@ fn cli() -> Command {
                 .subcommand(Command::new("cycle").about("Power cycle").arg(line_arg))
                 .subcommand(Command::new("status").about("Power status")),
         )
+        .subcommand(Command::new("pinout").about("Print pinout diagram"))
 }
 
 fn print_power_state(line: &str, state: PowerState) {
@@ -157,24 +160,29 @@ fn run() -> AppResult {
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;
         }
+        Some(("pinout", _)) => {
+            println!("{}", include_str!("pinout.ansi"));
+        }
         Some(("boot", cmd)) => {
             Service::send(Request::EnterBootloader)?;
+            thread::sleep(Duration::from_millis(500));
             if cmd.get_flag("mount") {
                 let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
                 mount_pico_dev(disk)?;
             }
         }
-        Some(("flash", cmd)) => {
+        Some(("install", cmd)) => {
             Service::send(Request::EnterBootloader)?;
-            let firmware = cmd.get_one::<String>("FIRMWARE").unwrap();
+            thread::sleep(Duration::from_millis(500));
             let path = if cmd.get_flag("mount") {
                 let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
                 let mut path = mount_pico_dev(disk)?;
-                path.push_str("/fw.uf2");
+                path.push_str("/firmware.uf2");
                 path
             } else {
                 cmd.get_one::<String>("PICO_PATH").unwrap().to_string()
             };
+            let firmware = cmd.get_one::<String>("FIRMWARE").unwrap();
             fs::copy(firmware, path).map_err(AppError::IoError)?;
         }
         Some(("power", cmd)) => match cmd.subcommand() {
