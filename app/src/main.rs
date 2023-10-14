@@ -1,12 +1,25 @@
-use app::*;
 use clap::{builder::PossibleValue, *};
 use gpio::*;
 use service::*;
+use std::path::Path;
+use std::time::Duration;
 use std::*;
 
-mod app;
 mod gpio;
 mod service;
+
+#[derive(Debug)]
+pub enum AppError {
+    InvalidLine,
+    MountFailed,
+    IoError(io::Error),
+    ServiceError(io::Error),
+    GpioError(gpio_cdev::Error),
+    DecodeError(string::FromUtf8Error),
+    ProtocolError(rmp_serde::decode::Error),
+}
+
+pub type AppResult = Result<(), AppError>;
 
 fn main() {
     if let Err(err) = run() {
@@ -96,6 +109,35 @@ fn parse_power_line(cmd: &ArgMatches) -> Result<PowerLine, AppError> {
         .unwrap()
         .try_into()
         .map_err(|_| AppError::InvalidLine)
+}
+
+pub fn mount_pico_dev(disk: &str) -> Result<String, AppError> {
+    let path = Path::new(disk);
+    for _ in 0..5 {
+        if path.exists() {
+            break;
+        }
+        thread::sleep(Duration::from_millis(1_000));
+    }
+
+    for _ in 0..5 {
+        if let Ok(output) = process::Command::new("udisksctl")
+            .args(["mount", "-b", disk])
+            .stdout(process::Stdio::piped())
+            .output()
+        {
+            if output.status.success() {
+                let res = String::from_utf8(output.stdout).map_err(AppError::DecodeError)?;
+                return res
+                    .split(" at ")
+                    .last()
+                    .map(|s| s.trim().to_owned())
+                    .ok_or(AppError::MountFailed);
+            }
+            thread::sleep(Duration::from_millis(1_000));
+        }
+    }
+    Err(AppError::MountFailed)
 }
 
 fn run() -> AppResult {
