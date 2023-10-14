@@ -57,6 +57,7 @@ impl Gpio {
     }
 
     pub fn reset_pico(&mut self, boot: bool) {
+        self.vdd_en.set_value(1).ok();
         self.pico.set_values(&[0, !boot as _]).ok();
         thread::sleep(Duration::from_millis(100));
         self.pico.set_values(&[1, !boot as _]).ok();

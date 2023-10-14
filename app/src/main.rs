@@ -160,9 +160,6 @@ fn run() -> AppResult {
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;
         }
-        Some(("pinout", _)) => {
-            println!("{}", include_str!("pinout.ansi"));
-        }
         Some(("boot", cmd)) => {
             Service::send(Request::EnterBootloader)?;
             thread::sleep(Duration::from_millis(500));
@@ -207,6 +204,9 @@ fn run() -> AppResult {
             }
             _ => {}
         },
+        Some(("pinout", _)) => {
+            println!("{}", include_str!("pinout.ansi"));
+        }
         _ => {}
     }
 
