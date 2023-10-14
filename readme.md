@@ -3,7 +3,7 @@
 <img width="500" src="fab/upico.png" />
 
 ### What is it?
-uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expansion card designed to enhance the capabilities of [Clockwork's uConsoleClockwork uConsole](https://www.clockworkpi.com/uconsole).
+uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expansion card designed to enhance the capabilities of [Clockwork's uConsole](https://www.clockworkpi.com/uconsole).
 
 ### Features
 
