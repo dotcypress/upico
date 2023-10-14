@@ -38,6 +38,12 @@ uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expans
 ╚══════╩══════╝
 ```
 
+## Resources
+
+- [Schematics](fab/upico.pdf)
+- [PCB Viewer](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2Fdotcypress%2Fupico%2Fblob%2Fmain%2Fpcb%2Fupico.kicad_pcb)
+- [Interactive BOM](https://htmlpreview.github.io/?https://github.com/dotcypress/upico/blob/main/fab/ibom.html)
+
 ## License
 
 Licensed under either of
