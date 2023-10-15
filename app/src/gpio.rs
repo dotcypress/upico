@@ -166,20 +166,20 @@ pub const A04_PINS: GpioPins = GpioPins {
 };
 
 pub const A06_PINS: GpioPins = GpioPins {
-    // GPIO38
+    // GPIO38 - H23
     pico_run: 0,
-    // GPIO37
+    // GPIO37 - F27
     pico_boot: 0,
-    // GPIO40
+    // GPIO40 - E25
     aux_en: 0,
-    // GPIO36
+    // GPIO36 - E26
     vdd_en: 0,
-    // GPIO31
+    // GPIO31 - AJ3
     usb_en: 0,
-    // GPIO39
+    // GPIO39 - E30
     aux_ocp: 0,
-    // GPIO35
+    // GPIO35 - D26
     vdd_ocp: 0,
-    // GPIO30
+    // GPIO30 - G26
     usb_ocp: 0,
 };
