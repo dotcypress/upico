@@ -42,6 +42,6 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: install
-          args: --git https://github.com/cross-rs/cross
+          args: --git https://github.com/cross-rs/cross cross
       - name: R-01 Build
         run: cross build --release --target=riscv64gc-unknown-linux-gnu --no-default-features --features=r01
