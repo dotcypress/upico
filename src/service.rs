@@ -54,6 +54,7 @@ pub enum Request {
 #[derive(Serialize, Deserialize, Debug, Copy, Clone)]
 pub enum Response {
     Done,
+    ServiceError,
     PowerReport(PowerReport),
 }
 
@@ -64,7 +65,7 @@ pub struct Service {
 impl Service {
     const SOCKET: &'static str = "/tmp/upico.sock";
 
-    pub fn start(chip: &str) -> AppResult {
+    pub fn start() -> AppResult {
         let err = UnixStream::connect(Service::SOCKET).map_err(|err| err.kind());
         if let Err(ErrorKind::ConnectionRefused) = err {
             fs::remove_file(Service::SOCKET).map_err(AppError::ServiceError)?
@@ -76,7 +77,7 @@ impl Service {
         perms.set_mode(0o766);
         fs::set_permissions(Service::SOCKET, perms).map_err(AppError::IoError)?;
 
-        let gpio = Gpio::new(chip).map_err(AppError::GpioError)?;
+        let gpio = Gpio::try_new().map_err(AppError::GpioError)?;
         let mut service = Self { gpio };
 
         let mut scratch = [0; 64];
@@ -87,7 +88,7 @@ impl Service {
                 .and_then(|n| {
                     from_slice::<Request>(&scratch[0..n]).map_err(AppError::ProtocolError)
                 })
-                .map(|req| service.request(req))
+                .map(|req| service.on_request(req).unwrap_or(Response::ServiceError))
                 .map(|res| to_vec(&res).unwrap())
                 .map(|packet| stream.write(&packet))
                 .ok();
@@ -107,18 +108,18 @@ impl Service {
         from_slice(&scratch[0..n]).map_err(AppError::ProtocolError)
     }
 
-    fn request(&mut self, req: Request) -> Response {
+    fn on_request(&mut self, req: Request) -> Result<Response, io::Error> {
         match req {
-            Request::PowerOn(line) => self.gpio.power_on(line),
-            Request::PowerOff(line) => self.gpio.power_off(line),
-            Request::PowerCycle(line) => self.gpio.power_cycle(line),
-            Request::Reset => self.gpio.reset_pico(false),
-            Request::EnterBootloader => self.gpio.reset_pico(true),
+            Request::PowerOn(line) => self.gpio.set_power_enabled(line, true)?,
+            Request::PowerOff(line) => self.gpio.set_power_enabled(line, false)?,
+            Request::PowerCycle(line) => self.gpio.power_cycle(line)?,
+            Request::Reset => self.gpio.reset_pico(false)?,
+            Request::EnterBootloader => self.gpio.reset_pico(true)?,
             Request::PowerStatus => {
-                let report = self.gpio.power_report();
-                return Response::PowerReport(report);
+                let report = self.gpio.power_report()?;
+                return Ok(Response::PowerReport(report));
             }
         }
-        Response::Done
+        Ok(Response::Done)
     }
 }

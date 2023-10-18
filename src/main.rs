@@ -14,7 +14,7 @@ pub enum AppError {
     MountFailed,
     IoError(io::Error),
     ServiceError(io::Error),
-    GpioError(gpio_cdev::Error),
+    GpioError(io::Error),
     DecodeError(string::FromUtf8Error),
     ProtocolError(rmp_serde::decode::Error),
 }
@@ -51,12 +51,7 @@ fn cli() -> Command {
         .author(env!("CARGO_PKG_AUTHORS"))
         .subcommand_required(true)
         .arg_required_else_help(true)
-        .subcommand(
-            Command::new("service")
-                .about("Start service")
-                .hide(true)
-                .arg(arg!(-c [CHIP] "GPIO chip device").default_value("/dev/gpiochip0")),
-        )
+        .subcommand(Command::new("service").about("Start service").hide(true))
         .subcommand(Command::new("reset").about("Reset Pico"))
         .subcommand(
             Command::new("boot")
@@ -135,10 +130,7 @@ pub fn mount_pico_dev(disk: &str) -> Result<String, AppError> {
 
 fn run() -> AppResult {
     match cli().get_matches().subcommand() {
-        Some(("service", cmd)) => {
-            let gpio_chip = cmd.get_one::<String>("CHIP").unwrap();
-            Service::start(gpio_chip)?;
-        }
+        Some(("service", _)) => Service::start()?,
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;
         }

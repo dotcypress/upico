@@ -26,7 +26,7 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 
 1. Install rustup by following the instructions at https://rustup.rs
 2. Clone this repo: `git clone git@github.com:dotcypress/upico.git`
-3. Build: `cargo build --release --no-default-features --features r01`
+3. Build: `cargo build --release`
 4. `sudo cp target/release/upico /usr/local/bin/`
 5. `sudo cp upico.service /etc/systemd/system/`
 6. `sudo systemctl enable upico`

@@ -1,190 +1,103 @@
 use crate::*;
-use gpio_cdev::*;
 use std::time::Duration;
 
-pub struct GpioPins {
-    pico_run: u32,
-    pico_boot: u32,
-    aux_en: u32,
-    vdd_en: u32,
-    usb_en: u32,
-    aux_ocp: u32,
-    vdd_ocp: u32,
-    usb_ocp: u32,
+mod pins {
+    pub const PICO_RUN: usize = 38;
+    pub const PICO_BOOT: usize = 37;
+    pub const AUX_EN: usize = 40;
+    pub const VDD_EN: usize = 36;
+    pub const USB_EN: usize = 31;
+    pub const AUX_OCP: usize = 39;
+    pub const VDD_OCP: usize = 35;
+    pub const USB_OCP: usize = 30;
 }
 
-pub struct Gpio {
-    pico: MultiLineHandle,
-    ocp: MultiLineHandle,
-    aux_en: LineHandle,
-    vdd_en: LineHandle,
-    usb_en: LineHandle,
-}
+pub struct Gpio {}
 
 impl Gpio {
-    pub fn new(chip: &str) -> Result<Gpio, gpio_cdev::Error> {
-        let pins = PINS;
-        let mut chip = Chip::new(chip)?;
+    pub fn try_new() -> Result<Gpio, io::Error> {
+        Self::set_pin_mode_out(pins::PICO_RUN, true)?;
+        Self::set_pin_mode_out(pins::PICO_BOOT, true)?;
+        Self::set_pin_mode_out(pins::AUX_EN, false)?;
+        Self::set_pin_mode_out(pins::VDD_EN, false)?;
+        Self::set_pin_mode_out(pins::USB_EN, true)?;
+        Self::set_pin_mode_in(pins::AUX_OCP)?;
+        Self::set_pin_mode_in(pins::VDD_OCP)?;
+        Self::set_pin_mode_in(pins::USB_OCP)?;
+        Ok(Self {})
+    }
 
-        let pico = chip.get_lines(&[pins.pico_run, pins.pico_boot])?.request(
-            LineRequestFlags::OUTPUT,
-            &[1, 1],
-            "up_mcu_ctl",
-        )?;
+    pub fn reset_pico(&mut self, boot: bool) -> Result<(), io::Error> {
+        Self::set_pin_state(pins::VDD_EN, true)?;
+        Self::set_pin_state(pins::PICO_RUN, false)?;
+        Self::set_pin_state(pins::PICO_BOOT, !boot)?;
+        thread::sleep(Duration::from_millis(100));
+        Self::set_pin_state(pins::PICO_RUN, true)?;
+        if boot {
+            thread::sleep(Duration::from_millis(100));
+            Self::set_pin_state(pins::PICO_BOOT, true)?;
+        }
+        Ok(())
+    }
 
-        let aux_en =
-            chip.get_line(pins.aux_en)?
-                .request(LineRequestFlags::OUTPUT, 0, "up_aux_en")?;
+    pub fn set_power_enabled(&mut self, line: PowerLine, enabled: bool) -> Result<(), io::Error> {
+        match line {
+            PowerLine::Aux => Self::set_pin_state(pins::AUX_EN, enabled),
+            PowerLine::Vdd => Self::set_pin_state(pins::VDD_EN, enabled),
+            PowerLine::Usb => Self::set_pin_state(pins::USB_EN, enabled),
+        }
+    }
 
-        let vdd_en =
-            chip.get_line(pins.vdd_en)?
-                .request(LineRequestFlags::OUTPUT, 0, "up_vdd_en")?;
+    pub fn power_cycle(&mut self, line: PowerLine) -> Result<(), io::Error> {
+        self.set_power_enabled(line, false)?;
+        thread::sleep(Duration::from_millis(100));
+        self.set_power_enabled(line, true)
+    }
 
-        let usb_en =
-            chip.get_line(pins.usb_en)?
-                .request(LineRequestFlags::OUTPUT, 1, "up_usb_en")?;
-
-        let ocp = chip
-            .get_lines(&[pins.aux_ocp, pins.vdd_ocp, pins.usb_ocp])?
-            .request(LineRequestFlags::INPUT, &[0, 0, 0], "up_ocp")?;
-
-        Ok(Self {
-            pico,
-            ocp,
-            aux_en,
-            vdd_en,
-            usb_en,
+    pub fn power_report(&mut self) -> Result<PowerReport, io::Error> {
+        Ok(PowerReport {
+            aux: PowerState {
+                on: Self::get_pin_state(pins::AUX_EN)?,
+                ocp: !Self::get_pin_state(pins::AUX_OCP)?,
+            },
+            vdd: PowerState {
+                on: Self::get_pin_state(pins::VDD_EN)?,
+                ocp: !Self::get_pin_state(pins::VDD_OCP)?,
+            },
+            usb: PowerState {
+                on: Self::get_pin_state(pins::USB_EN)?,
+                ocp: !Self::get_pin_state(pins::USB_OCP)?,
+            },
         })
     }
 
-    pub fn reset_pico(&mut self, boot: bool) {
-        self.vdd_en.set_value(1).ok();
-        self.pico.set_values(&[0, !boot as _]).ok();
-        thread::sleep(Duration::from_millis(100));
-        self.pico.set_values(&[1, !boot as _]).ok();
-        thread::sleep(Duration::from_millis(100));
-        self.pico.set_values(&[1, 1]).ok();
+    fn set_pin_mode_out(pin: usize, def_state: bool) -> Result<(), io::Error> {
+        process::Command::new("gpio")
+            .args(["mode", &pin.to_string(), "out"])
+            .output()?;
+        Self::set_pin_state(pin, def_state)
     }
 
-    pub fn power_on(&mut self, line: PowerLine) {
-        match line {
-            PowerLine::Aux => self.aux_en.set_value(1),
-            PowerLine::Vdd => self.vdd_en.set_value(1),
-            PowerLine::Usb => self.usb_en.set_value(1),
-        }
-        .ok();
+    fn set_pin_mode_in(pin: usize) -> Result<(), io::Error> {
+        process::Command::new("gpio")
+            .args(["mode", &pin.to_string(), "in"])
+            .output()?;
+        Ok(())
     }
 
-    pub fn power_off(&mut self, line: PowerLine) {
-        match line {
-            PowerLine::Aux => self.aux_en.set_value(0),
-            PowerLine::Vdd => self.vdd_en.set_value(0),
-            PowerLine::Usb => self.usb_en.set_value(0),
-        }
-        .ok();
+    fn get_pin_state(pin: usize) -> Result<bool, io::Error> {
+        let stdout = process::Command::new("gpio")
+            .args(["read", &pin.to_string()])
+            .stdout(process::Stdio::piped())
+            .output()?
+            .stdout;
+        Ok(!stdout.is_empty() && stdout[0] == b'1')
     }
 
-    pub fn power_cycle(&mut self, line: PowerLine) {
-        self.power_off(line);
-        thread::sleep(Duration::from_millis(100));
-        self.power_on(line);
-    }
-
-    pub fn power_report(&mut self) -> PowerReport {
-        let ocp = self.ocp.get_values().unwrap_or_default();
-        PowerReport {
-            aux: PowerState {
-                on: self.aux_en.get_value().unwrap_or_default() != 0,
-                ocp: ocp[0] == 0,
-            },
-            vdd: PowerState {
-                on: self.vdd_en.get_value().unwrap_or_default() != 0,
-                ocp: ocp[1] == 0,
-            },
-            usb: PowerState {
-                on: self.usb_en.get_value().unwrap_or_default() != 0,
-                ocp: ocp[2] == 0,
-            },
-        }
+    fn set_pin_state(pin: usize, state: bool) -> Result<(), io::Error> {
+        process::Command::new("gpio")
+            .args(["write", &pin.to_string(), if state { "1" } else { "0" }])
+            .output()?;
+        Ok(())
     }
 }
-
-#[cfg(feature = "r01")]
-pub const PINS: GpioPins = GpioPins {
-    // GPIO38 - PD12
-    pico_run: 108,
-    // GPIO37 - PE10
-    pico_boot: 138,
-    // GPIO40 - PD22
-    aux_en: 118,
-    // GPIO36 - PE11
-    vdd_en: 139,
-    // GPIO31 - PE14
-    usb_en: 142,
-    // GPIO39 - PD11
-    aux_ocp: 107,
-    // GPIO35 - PE12
-    vdd_ocp: 140,
-    // GPIO30 - PE15
-    usb_ocp: 143,
-};
-
-#[cfg(feature = "cm4")]
-pub const PINS: GpioPins = GpioPins {
-    // GPIO38 - gpio6 -
-    pico_run: 0,
-    // GPIO37 - gpio27 -
-    pico_boot: 0,
-    // GPIO40 - gpio16 -
-    aux_en: 0,
-    // GPIO36 - gpio26 -
-    vdd_en: 0,
-    // GPIO31 - gpio21 -
-    usb_en: 0,
-    // GPIO39 - gpio7 -
-    aux_ocp: 0,
-    // GPIO35 - gpio25 -
-    vdd_ocp: 0,
-    // GPIO30 - gpio20 -
-    usb_ocp: 0,
-};
-
-#[cfg(feature = "a04")]
-pub const PINS: GpioPins = GpioPins {
-    // GPIO38
-    pico_run: 0,
-    // GPIO37
-    pico_boot: 0,
-    // GPIO40
-    aux_en: 0,
-    // GPIO36
-    vdd_en: 0,
-    // GPIO31
-    usb_en: 0,
-    // GPIO39
-    aux_ocp: 0,
-    // GPIO35
-    vdd_ocp: 0,
-    // GPIO30
-    usb_ocp: 0,
-};
-
-#[cfg(feature = "a06")]
-pub const PINS: GpioPins = GpioPins {
-    // GPIO38 - H23
-    pico_run: 0,
-    // GPIO37 - F27
-    pico_boot: 0,
-    // GPIO40 - E25
-    aux_en: 0,
-    // GPIO36 - E26
-    vdd_en: 0,
-    // GPIO31 - AJ3
-    usb_en: 0,
-    // GPIO39 - E30
-    aux_ocp: 0,
-    // GPIO35 - D26
-    vdd_ocp: 0,
-    // GPIO30 - G26
-    usb_ocp: 0,
-};
