@@ -22,7 +22,8 @@ pub struct Gpio {
 }
 
 impl Gpio {
-    pub fn new(chip: &str, pins: GpioPins) -> Result<Gpio, gpio_cdev::Error> {
+    pub fn new(chip: &str) -> Result<Gpio, gpio_cdev::Error> {
+        let pins = PINS;
         let mut chip = Chip::new(chip)?;
 
         let pico = chip.get_lines(&[pins.pico_run, pins.pico_boot])?.request(
@@ -108,7 +109,8 @@ impl Gpio {
     }
 }
 
-pub const R01_PINS: GpioPins = GpioPins {
+#[cfg(feature = "r01")]
+pub const PINS: GpioPins = GpioPins {
     // GPIO38 - PD12
     pico_run: 108,
     // GPIO37 - PE10
@@ -127,7 +129,8 @@ pub const R01_PINS: GpioPins = GpioPins {
     usb_ocp: 143,
 };
 
-pub const CM4_PINS: GpioPins = GpioPins {
+#[cfg(feature = "cm4")]
+pub const PINS: GpioPins = GpioPins {
     // GPIO38 - gpio6 -
     pico_run: 0,
     // GPIO37 - gpio27 -
@@ -146,7 +149,8 @@ pub const CM4_PINS: GpioPins = GpioPins {
     usb_ocp: 0,
 };
 
-pub const A04_PINS: GpioPins = GpioPins {
+#[cfg(feature = "a04")]
+pub const PINS: GpioPins = GpioPins {
     // GPIO38
     pico_run: 0,
     // GPIO37
@@ -165,7 +169,8 @@ pub const A04_PINS: GpioPins = GpioPins {
     usb_ocp: 0,
 };
 
-pub const A06_PINS: GpioPins = GpioPins {
+#[cfg(feature = "a06")]
+pub const PINS: GpioPins = GpioPins {
     // GPIO38 - H23
     pico_run: 0,
     // GPIO37 - F27

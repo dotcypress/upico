@@ -55,17 +55,7 @@ fn cli() -> Command {
             Command::new("service")
                 .about("Start service")
                 .hide(true)
-                .arg(arg!(-c [CHIP] "GPIO chip device").default_value("/dev/gpiochip0"))
-                .arg(
-                    arg!(<CORE> "Core module")
-                        .value_parser([
-                            // PossibleValue::new("a04"),
-                            // PossibleValue::new("a06"),
-                            // PossibleValue::new("cm4"),
-                            PossibleValue::new("r01"),
-                        ])
-                        .required(true),
-                ),
+                .arg(arg!(-c [CHIP] "GPIO chip device").default_value("/dev/gpiochip0")),
         )
         .subcommand(Command::new("reset").about("Reset Pico"))
         .subcommand(
@@ -147,15 +137,7 @@ fn run() -> AppResult {
     match cli().get_matches().subcommand() {
         Some(("service", cmd)) => {
             let gpio_chip = cmd.get_one::<String>("CHIP").unwrap();
-            let core = cmd.get_one::<String>("CORE").unwrap();
-            let pins = match core.to_lowercase().as_str() {
-                "a04" => A04_PINS,
-                "a06" => A06_PINS,
-                "cm4" => CM4_PINS,
-                "r01" => R01_PINS,
-                _ => unreachable!(),
-            };
-            Service::start(gpio_chip, pins)?;
+            Service::start(gpio_chip)?;
         }
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;

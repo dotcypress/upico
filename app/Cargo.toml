@@ -15,5 +15,15 @@ owo-colors = "3.5.0"
 rmp-serde = "1.1.2"
 serde = { version = "1.0.188", features = ["serde_derive"] }
 
+[features]
+default = ["r01"]
+r01 = []
+cm4 = []
+a04 = []
+a06 = []
+
 [profile.release]
 strip = true
+
+[package.metadata.cross.target.riscv64gc-unknown-linux-gnu]
+image = "ghcr.io/cross-rs/riscv64gc-unknown-linux-gnu:0.2.4"
