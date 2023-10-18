@@ -45,3 +45,5 @@ jobs:
           args: --git https://github.com/cross-rs/cross cross
       - name: R-01 Build
         run: cross build --release --target=riscv64gc-unknown-linux-gnu
+      - name: CM4/A-04/A-06 Build
+        run: cross build --release --target=armv7-unknown-linux-musleabihf
