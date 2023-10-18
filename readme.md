@@ -15,6 +15,16 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 * RP2040 with extenal double-double PMOD compatible connector
 * RP2040 controllable LED
 
+### uPico control app building instructions
+
+1. Install rustup by following the instructions at https://rustup.rs
+2. Clone this repo: `git clone git@github.com:dotcypress/upico.git`
+3. Build: `cargo build --release --no-default-features --features r01` (replace `r01` with your core module: `cm4`, `a04`, `a06`)
+4. `sudo cp target/release/upico /usr/local/bin/`
+5. `sudo cp upico.service /etc/systemd/system/`
+6. `sudo systemctl enable upico`
+7. `sudo systemctl start upico`
+
 ### Pinout
 ```
 ╔══════╦══════╗
