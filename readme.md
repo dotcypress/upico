@@ -3,6 +3,7 @@
 <img width="500" src="fab/upico.png" />
 
 ### What is it?
+
 uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expansion card designed to enhance the capabilities of [Clockwork's uConsole](https://www.clockworkpi.com/uconsole).
 
 Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<sup>-18</sup> 🤓
@@ -15,11 +16,17 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 * RP2040 with extenal double-double PMOD compatible connector
 * RP2040 controllable LED
 
-### uPico control app building instructions
+## Resources
+
+- [Schematics](fab/upico.pdf)
+- [PCB Viewer](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2Fdotcypress%2Fupico%2Fblob%2Fmain%2Fpcb%2Fupico.kicad_pcb)
+- [Interactive BOM](https://htmlpreview.github.io/?https://github.com/dotcypress/upico/blob/main/fab/ibom.html)
+
+### Control app building instructions
 
 1. Install rustup by following the instructions at https://rustup.rs
 2. Clone this repo: `git clone git@github.com:dotcypress/upico.git`
-3. Build: `cargo build --release --no-default-features --features r01` (replace `r01` with your core module: `cm4`, `a04`, `a06`)
+3. Build: `cargo build --release --no-default-features --features r01`
 4. `sudo cp target/release/upico /usr/local/bin/`
 5. `sudo cp upico.service /etc/systemd/system/`
 6. `sudo systemctl enable upico`
@@ -50,12 +57,6 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 ╚══════╩══════╝
 ```
 
-## Resources
-
-- [Schematics](fab/upico.pdf)
-- [PCB Viewer](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2Fdotcypress%2Fupico%2Fblob%2Fmain%2Fpcb%2Fupico.kicad_pcb)
-- [Interactive BOM](https://htmlpreview.github.io/?https://github.com/dotcypress/upico/blob/main/fab/ibom.html)
-
 ## License
 
 <img width="240" src="fab/certification-mark-US002561.png" />
@@ -67,7 +68,6 @@ Licensed under either of
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 at your option.
-
 
 ### Contribution
 
