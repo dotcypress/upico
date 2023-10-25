@@ -60,6 +60,7 @@
       (edge_connector bevelled)
     )
     (pad_to_mask_clearance 0)
+    (aux_axis_origin 84.775 127.5786)
     (pcbplotparams
       (layerselection 0x00010fc_ffffffff)
       (plot_on_all_layers_selection 0x0000000_00000000)
@@ -74,7 +75,7 @@
       (plotframeref false)
       (viasonmask false)
       (mode 1)
-      (useauxorigin false)
+      (useauxorigin true)
       (hpglpennumber 1)
       (hpglpenspeed 20)
       (hpglpendiameter 15.000000)

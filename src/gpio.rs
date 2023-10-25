@@ -20,7 +20,7 @@ impl Gpio {
         Self::set_pin_mode_out(pins::PICO_BOOT, true)?;
         Self::set_pin_mode_out(pins::AUX_EN, false)?;
         Self::set_pin_mode_out(pins::VDD_EN, false)?;
-        Self::set_pin_mode_out(pins::USB_EN, true)?;
+        Self::set_pin_mode_out(pins::USB_EN, false)?;
         Self::set_pin_mode_in(pins::AUX_OCP)?;
         Self::set_pin_mode_in(pins::VDD_OCP)?;
         Self::set_pin_mode_in(pins::USB_OCP)?;
@@ -28,7 +28,7 @@ impl Gpio {
     }
 
     pub fn reset_pico(&mut self, boot: bool) -> Result<(), io::Error> {
-        Self::set_pin_state(pins::VDD_EN, true)?;
+        Self::set_pin_state(pins::VDD_EN, false)?;
         Self::set_pin_state(pins::PICO_RUN, false)?;
         Self::set_pin_state(pins::PICO_BOOT, !boot)?;
         thread::sleep(Duration::from_millis(100));
@@ -42,9 +42,9 @@ impl Gpio {
 
     pub fn set_power_enabled(&mut self, line: PowerLine, enabled: bool) -> Result<(), io::Error> {
         match line {
-            PowerLine::Aux => Self::set_pin_state(pins::AUX_EN, enabled),
-            PowerLine::Vdd => Self::set_pin_state(pins::VDD_EN, enabled),
-            PowerLine::Usb => Self::set_pin_state(pins::USB_EN, enabled),
+            PowerLine::Aux => Self::set_pin_state(pins::AUX_EN, !enabled),
+            PowerLine::Vdd => Self::set_pin_state(pins::VDD_EN, !enabled),
+            PowerLine::Usb => Self::set_pin_state(pins::USB_EN, !enabled),
         }
     }
 
@@ -57,15 +57,15 @@ impl Gpio {
     pub fn power_report(&mut self) -> Result<PowerReport, io::Error> {
         Ok(PowerReport {
             aux: PowerState {
-                on: Self::get_pin_state(pins::AUX_EN)?,
+                on: !Self::get_pin_state(pins::AUX_EN)?,
                 ocp: !Self::get_pin_state(pins::AUX_OCP)?,
             },
             vdd: PowerState {
-                on: Self::get_pin_state(pins::VDD_EN)?,
+                on: !Self::get_pin_state(pins::VDD_EN)?,
                 ocp: !Self::get_pin_state(pins::VDD_OCP)?,
             },
             usb: PowerState {
-                on: Self::get_pin_state(pins::USB_EN)?,
+                on: !Self::get_pin_state(pins::USB_EN)?,
                 ocp: !Self::get_pin_state(pins::USB_OCP)?,
             },
         })
