@@ -45,6 +45,10 @@ jobs:
           args: --git https://github.com/cross-rs/cross cross
       - name: R-01 Build
         run: cross build --release --target=riscv64gc-unknown-linux-gnu
+      - name: CM4/A-04/A-06 Build
+        run: cross build --release --target=armv7-unknown-linux-musleabihf
+      - name: Copy R-01 binary
+        run : cp -f ./target/riscv64gc-unknown-linux-gnu/release/upico upico
       - name: Compress R-01 Build
         uses: a7ul/tar-action@v1.1.0
         with:
@@ -55,10 +59,10 @@ jobs:
             ./LICENSE-APACHE
             ./install.sh
             ./upico.service
-            ./target/riscv64gc-unknown-linux-gnu/release/upico
+            ./upico
           outPath: upico_${{ github.ref_name }}.riscv64gc.tar.gz
-      - name: CM4/A-04/A-06 Build
-        run: cross build --release --target=armv7-unknown-linux-musleabihf
+      - name: Copy CM4/A-04/A-06 binary
+        run : cp -f ./target/armv7-unknown-linux-musleabihf/release/upico upico
       - name: Compress CM4/A-04/A-06 Build
         uses: a7ul/tar-action@v1.1.0
         with:
@@ -69,7 +73,7 @@ jobs:
             ./LICENSE-APACHE
             ./install.sh
             ./upico.service
-            ./target/armv7-unknown-linux-musleabihf/release/upico
+            ./upico
           outPath: upico_${{ github.ref_name }}.armv7.tar.gz
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
