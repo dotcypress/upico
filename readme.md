@@ -24,8 +24,15 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 - [PCB Viewer](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2Fdotcypress%2Fupico%2Fblob%2Fmain%2Fpcb%2Fupico.kicad_pcb)
 - [Interactive BOM](https://htmlpreview.github.io/?https://github.com/dotcypress/upico/blob/main/fab/ibom.html)
 
-### Control app building instructions
+### Control app installation
 
+1. Download latest build from [Releases page](https://github.com/dotcypress/upico/releases)
+2. Extract installer: `mkdir dist && tar -xzf upico_%version%.%arch%.tar.gz -C dist`
+3. Install: `cd dist && ./install.sh`
+4. Cleanup: `cd .. && rm -rf dist`
+5. Print help: `upico help`
+
+### Building control app from sources
 1. Install rustup by following the instructions at https://rustup.rs
 2. Clone this repo: `git clone git@github.com:dotcypress/upico.git && cd upico`
 3. Build: `cargo build --release`
