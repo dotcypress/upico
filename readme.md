@@ -1,6 +1,6 @@
 ## μPico
 
-<img width="500" src="fab/upico.jpg" />
+<img width="500" src="docs/upico.jpg" />
 
 ### What is it?
 
@@ -16,13 +16,13 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 * RP2040 with extenal double-double PMOD compatible connector
 * RP2040 controllable LED
 
-<a href="https://www.tindie.com/stores/quadbit"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
-
 ## Resources
 
-- [Schematics](fab/upico.pdf)
+- [Schematics](docs/upico.pdf)
 - [PCB Viewer](https://kicanvas.org/?github=https%3A%2F%2Fgithub.com%2Fdotcypress%2Fupico%2Fblob%2Fmain%2Fpcb%2Fupico.kicad_pcb)
-- [Interactive BOM](https://htmlpreview.github.io/?https://github.com/dotcypress/upico/blob/main/fab/ibom.html)
+- [Interactive BOM](https://htmlpreview.github.io/?https://github.com/dotcypress/upico/blob/main/docs/ibom.html)
+
+<a href="https://www.tindie.com/stores/quadbit"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 
 ### Control app installation
 
@@ -44,7 +44,7 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 
 ### High level design diagram
 
-<img width="500" src="fab/upico_hld.png" />
+<img width="500" src="docs/upico_hld.png" />
 
 ### RP4040 Pinout
 ```
@@ -72,8 +72,6 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 ```
 
 ## License
-
-<img width="240" src="fab/certification-mark-US002561.png" />
 
 Licensed under either of
 
