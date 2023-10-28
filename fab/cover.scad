@@ -9,7 +9,7 @@ module cover() {
         cube(size=[55, 9.5, 1.8], center=true);
     }
 
-    translate([5.5+epsilon, 2.5+epsilon, 0]) 
+    translate([5.3+epsilon, 2.5+epsilon, 0]) 
       cube(size=[44, 5, 20], center=true);
 
     translate([-24.5, 1.8, 0]) hull() {
@@ -28,5 +28,5 @@ module print() {
   }
 }
 
-print();
-// cover();
+// print();
+cover();
