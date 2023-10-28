@@ -1,6 +1,6 @@
 ## μPico
 
-<img width="500" src="fab/upico.png" />
+<img width="500" src="fab/upico.jpg" />
 
 ### What is it?
 
@@ -35,7 +35,11 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 7. Start service: `sudo systemctl start upico`
 8. Print help: `upico help`
 
-### Pinout
+### High level design diagram
+
+<img width="500" src="fab/upico_hld.png" />
+
+### RP4040 Pinout
 ```
 ╔══════╦══════╗
 ║ AUX  ║ AUX  ║

@@ -1,0 +1,25 @@
+uConsoleEXT: {
+  Speakers
+  USB3
+  GPIO
+  USB4
+}
+
+uConsoleEXT.Speakers -> Speakers
+
+uConsoleEXT.USB4 -> RP2040
+uConsoleEXT.USB3 -> USB-C Port
+
+uConsoleEXT.GPIO -> Pico Power Switch
+uConsoleEXT.GPIO -> USB Power Switch
+uConsoleEXT.GPIO -> AUX Power Switch
+
+Pico Power Switch -> RP2040
+Pico Power Switch -> PMOD Connector: 3.3V
+AUX Power Switch -> PMOD Connector: 5V
+USB Power Switch -> USB-C Port
+
+uConsoleEXT.GPIO -> RP2040: Reset, Boot
+
+RP2040 -> PMOD Connector: IO
+RP2040 -> LED: GPIO25
