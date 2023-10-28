@@ -71,6 +71,12 @@ jobs:
             ./upico.service
             ./target/armv7-unknown-linux-musleabihf/release/upico
           outPath: upico_${{ github.ref_name }}.armv7.tar.gz
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: upico-installers
+          path: upico_*.tar.gz
+          retention-days: 7
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
