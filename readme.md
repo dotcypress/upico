@@ -33,6 +33,7 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 5. Print help: `upico help`
 
 ### Building control app from sources
+
 1. Install rustup by following the instructions at https://rustup.rs
 2. Clone this repo: `git clone git@github.com:dotcypress/upico.git && cd upico`
 3. Build: `cargo build --release`
@@ -41,6 +42,11 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 6. Enable service: `sudo systemctl enable upico`
 7. Start service: `sudo systemctl start upico`
 8. Print help: `upico help`
+
+### Flash blinky firmware
+
+1. `wget https://rptl.io/pico-blink`
+2. `upico install [-m] pico-blink`
 
 ### High level design diagram
 
@@ -60,7 +66,7 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 ╠══════╬══════╣
 ║ IO27 ║ IO29 ║
 ║ IO26 ║ IO28 ║
-║ SDA  ║ SCL  ║
+║ IO18 ║ IO19 ║
 ╠══════╬══════╣
 ║ VDD  ║ VDD  ║
 ║ GND  ║ GND  ║

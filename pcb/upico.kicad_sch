@@ -5586,10 +5586,10 @@
   (symbol (lib_id "Device:R") (at 138.43 215.9 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 47bf9121-c69e-4f85-9e32-49c2f4f7cb3d)
-    (property "Reference" "R13" (at 133.35 217.17 90)
+    (property "Reference" "R13" (at 135.89 218.44 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "DNP" (at 143.51 217.17 90)
+    (property "Value" "0R" (at 140.97 218.44 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 138.43 214.122 90)
@@ -5598,8 +5598,8 @@
     (property "Datasheet" "~" (at 138.43 215.9 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid d1fa45a6-aa04-46fe-8834-a87c35cb0b56))
-    (pin "2" (uuid c7ea969c-220e-4e79-962f-7dc9d2a39354))
+    (pin "1" (uuid f373b09e-6eb3-4f7a-8cd0-552140673370))
+    (pin "2" (uuid c07eeaa2-395e-4fc3-8293-f0c04fc68d46))
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"
@@ -6888,10 +6888,10 @@
   (symbol (lib_id "Device:R") (at 138.43 213.36 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid be50ea34-b1d9-4e18-8ee0-db352e9b2e00)
-    (property "Reference" "R12" (at 133.35 212.09 90)
+    (property "Reference" "R12" (at 135.89 210.82 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "DNP" (at 143.51 212.09 90)
+    (property "Value" "0R" (at 140.97 210.82 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 138.43 215.138 90)
@@ -6900,8 +6900,8 @@
     (property "Datasheet" "~" (at 138.43 213.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid e44d2ec6-accf-4650-adfa-5e342e4db594))
-    (pin "2" (uuid f49eb341-662b-4ac6-8ad9-423d482cd45c))
+    (pin "1" (uuid e9ecb939-dfd3-4559-8078-704c7c2f3124))
+    (pin "2" (uuid 4d44c03a-7157-45f6-ba42-fc00d9ae201a))
     (instances
       (project "upico"
         (path "/983c426c-24e0-4c65-ab69-1f1824adc5c6"

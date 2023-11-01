@@ -66,7 +66,7 @@ fn cli() -> Command {
                 .arg(arg!(<FIRMWARE> "Path to UF2 firmware file").required(true))
                 .arg(
                     arg!(-p <PICO_PATH> "Path to mounted Pico disk")
-                        .required_unless_present("mount"),
+                        .default_value("/media/cpi/RPI-RP2"),
                 )
                 .arg(mount_arg)
                 .arg(dev_arg),
@@ -99,16 +99,23 @@ fn parse_power_line(cmd: &ArgMatches) -> Result<PowerLine, AppError> {
         .map_err(|_| AppError::InvalidLine)
 }
 
-pub fn mount_pico_dev(disk: &str) -> Result<String, AppError> {
-    let path = Path::new(disk);
-    for _ in 0..5 {
+fn sleep(millis: u64) {
+    thread::sleep(Duration::from_millis(millis));
+}
+
+fn wait_for_path(path: &Path) {
+    for _ in 0..50 {
         if path.exists() {
+            sleep(200);
             break;
         }
-        thread::sleep(Duration::from_millis(1_000));
+        sleep(100);
     }
+}
 
-    for _ in 0..5 {
+fn mount_pico(disk: &str) -> Result<String, AppError> {
+    wait_for_path(Path::new(disk));
+    for _ in 0..50 {
         if let Ok(output) = process::Command::new("udisksctl")
             .args(["mount", "-b", disk])
             .stdout(process::Stdio::piped())
@@ -122,7 +129,7 @@ pub fn mount_pico_dev(disk: &str) -> Result<String, AppError> {
                     .map(|s| s.trim().to_owned())
                     .ok_or(AppError::MountFailed);
             }
-            thread::sleep(Duration::from_millis(1_000));
+            sleep(100);
         }
     }
     Err(AppError::MountFailed)
@@ -131,28 +138,31 @@ pub fn mount_pico_dev(disk: &str) -> Result<String, AppError> {
 fn run() -> AppResult {
     match cli().get_matches().subcommand() {
         Some(("service", _)) => Service::start()?,
+        Some(("pinout", _)) => {
+            println!("{}", include_str!("pinout.ansi"));
+        }
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;
         }
         Some(("boot", cmd)) => {
             Service::send(Request::EnterBootloader)?;
-            thread::sleep(Duration::from_millis(500));
             if cmd.get_flag("mount") {
                 let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
-                mount_pico_dev(disk)?;
+                mount_pico(disk)?;
             }
         }
         Some(("install", cmd)) => {
             Service::send(Request::EnterBootloader)?;
-            thread::sleep(Duration::from_millis(500));
-            let path = if cmd.get_flag("mount") {
+            let mut path = if cmd.get_flag("mount") {
                 let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
-                let mut path = mount_pico_dev(disk)?;
-                path.push_str("/firmware.uf2");
-                path
+                mount_pico(disk)?
             } else {
-                cmd.get_one::<String>("PICO_PATH").unwrap().to_string()
+                let path = cmd.get_one::<String>("PICO_PATH").unwrap().to_string();
+                wait_for_path(Path::new(&path));
+                path
             };
+
+            path.push_str("/fw.uf2");
             let firmware = cmd.get_one::<String>("FIRMWARE").unwrap();
             fs::copy(firmware, path).map_err(AppError::IoError)?;
         }
@@ -178,9 +188,6 @@ fn run() -> AppResult {
             }
             _ => {}
         },
-        Some(("pinout", _)) => {
-            println!("{}", include_str!("pinout.ansi"));
-        }
         _ => {}
     }
 
