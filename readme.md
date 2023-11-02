@@ -28,7 +28,7 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 
 1. Download latest build from [Releases page](https://github.com/dotcypress/upico/releases)
 2. Extract installer: `mkdir dist && tar -xzf upico_%version%.%arch%.tar.gz -C dist`
-3. Install: `cd dist && ./install.sh`
+3. Install: `cd dist && sudo ./install.sh`
 4. Cleanup: `cd .. && rm -rf dist`
 5. Print help: `upico help`
 
