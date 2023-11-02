@@ -43,10 +43,12 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 7. Start service: `sudo systemctl start upico`
 8. Print help: `upico help`
 
-### Flash blinky firmware
+### Flash firmware
 
 1. `wget https://rptl.io/pico-blink`
-2. `upico install [-m] pico-blink`
+2. `upico install pico-blink`
+
+See other examples: https://github.com/raspberrypi/pico-examples
 
 ### High level design diagram
 
