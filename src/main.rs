@@ -71,8 +71,13 @@ fn cli() -> Command {
                 .arg_required_else_help(true)
                 .arg(arg!(<FIRMWARE> "Path to UF2 firmware file").required(true))
                 .arg(
-                    arg!(-p <PICO_PATH> "Path to mounted Pico disk")
-                        .default_value(platform::PICO_PATH),
+                    arg!(-p <PICO_PATH> "Path to mounted Pico disk").default_value(
+                        if Path::new("/home/cpi").exists() {
+                            "/media/cpi/RPI-RP2"
+                        } else {
+                            "/media/pi/RPI-RP2"
+                        },
+                    ),
                 )
                 .arg(mount_arg)
                 .arg(dev_arg),

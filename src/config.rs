@@ -3,7 +3,6 @@
 pub mod platform {
     pub const OCP_REPORTING: bool = false;
     pub const AUX_SWITCH: bool = false;
-    pub const PICO_PATH: &str = "/media/pi/RPI-RP2";
     pub const PIN_PICO_BOOT: usize = 27;
     pub const PIN_VDD_EN: usize = 26;
     pub const PIN_USB_EN: usize = 21;
@@ -20,7 +19,6 @@ pub mod platform {
 pub mod platform {
     pub const OCP_REPORTING: bool = true;
     pub const AUX_SWITCH: bool = true;
-    pub const PICO_PATH: &str = "/media/cpi/RPI-RP2";
     pub const PIN_PICO_RUN: usize = 38;
     pub const PIN_PICO_BOOT: usize = 37;
     pub const PIN_AUX_EN: usize = 40;
