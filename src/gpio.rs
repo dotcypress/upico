@@ -43,10 +43,11 @@ impl Gpio {
     }
 
     pub fn reset_pico(&mut self, boot: bool) -> Result<(), io::Error> {
-        Self::set_pin_state(pins::VDD_EN, false)?;
+        Self::set_pin_state(pins::VDD_EN, true)?;
         Self::set_pin_state(pins::PICO_RUN, false)?;
         Self::set_pin_state(pins::PICO_BOOT, !boot)?;
         thread::sleep(Duration::from_millis(100));
+        Self::set_pin_state(pins::VDD_EN, false)?;
         Self::set_pin_state(pins::PICO_RUN, true)?;
         if boot {
             thread::sleep(Duration::from_millis(100));
