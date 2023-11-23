@@ -6,6 +6,8 @@
 
 uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expansion card designed to enhance the capabilities of [Clockwork's uConsole](https://www.clockworkpi.com/uconsole).
 
+⚠️ Only R-01 and CM4 core are supported by control application.
+
 Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<sup>-18</sup> 🤓
 
 ### Features
@@ -25,8 +27,6 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 <a href="https://www.tindie.com/stores/quadbit"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 
 ### Control app installation
-
-⚠️ Only R-01 and CM4 core are supported for now.
 
 1. Download latest build from [Releases page](https://github.com/dotcypress/upico/releases)
 2. Extract installer: `mkdir dist && tar -xzf upico_%version%.%core%.tar.gz -C dist`
@@ -85,7 +85,7 @@ See other examples: https://github.com/raspberrypi/pico-examples
 
 ### CM4 core & uPico PCB rev:0x02
 
-* External 5V(AUX) switch isn't supported, 5V is always present on pin header.
+* External 5V(AUX) programmable switch isn't supported, 5V is always present on pin header.
 * Overcurrent reporting feature isn't supported.
 
 ## License
