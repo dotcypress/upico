@@ -1,10 +1,12 @@
 use clap::{builder::PossibleValue, *};
+use config::*;
 use gpio::*;
 use service::*;
 use std::path::Path;
 use std::time::Duration;
 use std::*;
 
+mod config;
 mod gpio;
 mod service;
 
@@ -39,14 +41,14 @@ fn cli() -> Command {
     let mount_arg = arg!(mount: -m "Mount Pico disk");
     let dev_arg = arg!(-d <PICO_DEV> "Path to Pico disk device").default_value("/dev/sda1");
     let line_arg = arg!(<LINE> "Power line").required(true);
-    let line_arg = if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
-        line_arg.value_parser([PossibleValue::new("vdd"), PossibleValue::new("usb")])
-    } else {
+    let line_arg = if platform::AUX_SWITCH {
         line_arg.value_parser([
             PossibleValue::new("aux"),
             PossibleValue::new("vdd"),
             PossibleValue::new("usb"),
         ])
+    } else {
+        line_arg.value_parser([PossibleValue::new("vdd"), PossibleValue::new("usb")])
     };
 
     Command::new("upico")
@@ -68,13 +70,10 @@ fn cli() -> Command {
                 .about("Install firmware to Pico")
                 .arg_required_else_help(true)
                 .arg(arg!(<FIRMWARE> "Path to UF2 firmware file").required(true))
-                .arg(if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
+                .arg(
                     arg!(-p <PICO_PATH> "Path to mounted Pico disk")
-                        .default_value("/media/pi/RPI-RP2")
-                } else {
-                    arg!(-p <PICO_PATH> "Path to mounted Pico disk")
-                        .default_value("/media/cpi/RPI-RP2")
-                })
+                        .default_value(platform::PICO_PATH),
+                )
                 .arg(mount_arg)
                 .arg(dev_arg),
         )
@@ -89,7 +88,7 @@ fn cli() -> Command {
                 .subcommand(
                     Command::new("status")
                         .about("Power status")
-                        .hide(cfg!(any(target_arch = "arm", target_arch = "aarch64"))),
+                        .hide(!platform::OCP_REPORTING),
                 ),
         )
         .subcommand(Command::new("pinout").about("Print pinout diagram"))
@@ -172,7 +171,6 @@ fn run() -> AppResult {
                 wait_for_path(Path::new(&path));
                 path
             };
-
             path.push_str("/fw.uf2");
             let firmware = cmd.get_one::<String>("FIRMWARE").unwrap();
             fs::copy(firmware, path).map_err(AppError::IoError)?;
@@ -190,7 +188,7 @@ fn run() -> AppResult {
                 let line = parse_power_line(cmd)?;
                 Service::send(Request::PowerCycle(line))?;
             }
-            Some(("status", _)) if cfg!(not(any(target_arch = "arm", target_arch = "aarch64"))) => {
+            Some(("status", _)) if platform::OCP_REPORTING => {
                 if let Response::PowerReport(report) = Service::send(Request::PowerStatus)? {
                     print_power_state("AUX", report.aux);
                     print_power_state("VDD", report.vdd);
