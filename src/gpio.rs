@@ -1,7 +1,7 @@
 use crate::*;
 use std::time::Duration;
 
-#[cfg(not(target = "armv7-unknown-linux-musleabihf"))]
+#[cfg(not(target_arch = "arm"))]
 mod pins {
     pub const PICO_RUN: usize = 38;
     pub const PICO_BOOT: usize = 37;
@@ -13,12 +13,14 @@ mod pins {
     pub const USB_OCP: usize = 30;
 }
 
-#[cfg(target = "armv7-unknown-linux-musleabihf")]
+#[cfg(target_arch = "arm")]
 mod pins {
     pub const PICO_BOOT: usize = 27;
     pub const VDD_EN: usize = 26;
     pub const USB_EN: usize = 21;
+    //TODO: fix pcb
     pub const PICO_RUN: usize = 22;
+    //TODO: fix pcb
     pub const AUX_EN: usize = 23;
     pub const AUX_OCP: usize = 29;
     pub const VDD_OCP: usize = 25;
