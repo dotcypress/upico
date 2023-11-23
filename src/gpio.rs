@@ -1,19 +1,7 @@
 use crate::*;
 use std::time::Duration;
 
-#[cfg(not(target_arch = "arm"))]
-mod pins {
-    pub const PICO_RUN: usize = 38;
-    pub const PICO_BOOT: usize = 37;
-    pub const AUX_EN: usize = 40;
-    pub const VDD_EN: usize = 36;
-    pub const USB_EN: usize = 31;
-    pub const AUX_OCP: usize = 39;
-    pub const VDD_OCP: usize = 35;
-    pub const USB_OCP: usize = 30;
-}
-
-#[cfg(target_arch = "arm")]
+#[cfg(any(target_arch = "arm", target_arch = "aarch64"))]
 mod pins {
     pub const PICO_BOOT: usize = 27;
     pub const VDD_EN: usize = 26;
@@ -25,6 +13,18 @@ mod pins {
     pub const AUX_OCP: usize = 29;
     pub const VDD_OCP: usize = 25;
     pub const USB_OCP: usize = 20;
+}
+
+#[cfg(not(any(target_arch = "arm", target_arch = "aarch64")))]
+mod pins {
+    pub const PICO_RUN: usize = 38;
+    pub const PICO_BOOT: usize = 37;
+    pub const AUX_EN: usize = 40;
+    pub const VDD_EN: usize = 36;
+    pub const USB_EN: usize = 31;
+    pub const AUX_OCP: usize = 39;
+    pub const VDD_OCP: usize = 35;
+    pub const USB_OCP: usize = 30;
 }
 
 pub struct Gpio {}
@@ -46,7 +46,7 @@ impl Gpio {
         Self::set_pin_state(pins::VDD_EN, true)?;
         Self::set_pin_state(pins::PICO_RUN, false)?;
         Self::set_pin_state(pins::PICO_BOOT, !boot)?;
-        thread::sleep(Duration::from_millis(100));
+        thread::sleep(Duration::from_millis(200));
         Self::set_pin_state(pins::VDD_EN, false)?;
         Self::set_pin_state(pins::PICO_RUN, true)?;
         if boot {

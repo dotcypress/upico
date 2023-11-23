@@ -101,7 +101,7 @@ impl Service {
 
         let packet = to_vec(&req).unwrap();
         stream.write(&packet).map_err(AppError::IoError)?;
-        thread::sleep(Duration::from_millis(250));
+        thread::sleep(Duration::from_millis(300));
 
         let mut scratch = [0; 64];
         let n = stream.read(&mut scratch).map_err(AppError::ServiceError)?;

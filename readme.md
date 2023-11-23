@@ -26,10 +26,10 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 
 ### Control app installation
 
-⚠️ Only R-01 core is supported for now.
+⚠️ Only R-01 and CM4 core are supported for now.
 
 1. Download latest build from [Releases page](https://github.com/dotcypress/upico/releases)
-2. Extract installer: `mkdir dist && tar -xzf upico_%version%.%arch%.tar.gz -C dist`
+2. Extract installer: `mkdir dist && tar -xzf upico_%version%.%core%.tar.gz -C dist`
 3. Install: `cd dist && sudo ./install.sh`
 4. Cleanup: `cd .. && rm -rf dist`
 5. Print help: `upico help`
@@ -80,6 +80,13 @@ See other examples: https://github.com/raspberrypi/pico-examples
 ║ IO8  ║ IO12 ║
 ╚══════╩══════╝
 ```
+
+## Errata
+
+### CM4 core & uPico PCB rev:0x02
+
+* External 5V(AUX) switch isn't supported, 5V is always present on pin header.
+* Overcurrent reporting feature isn't supported.
 
 ## License
 

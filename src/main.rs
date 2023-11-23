@@ -38,13 +38,17 @@ fn main() {
 fn cli() -> Command {
     let mount_arg = arg!(mount: -m "Mount Pico disk");
     let dev_arg = arg!(-d <PICO_DEV> "Path to Pico disk device").default_value("/dev/sda1");
-    let line_arg = arg!(<LINE> "Power line")
-        .value_parser([
+    let line_arg = arg!(<LINE> "Power line").required(true);
+    let line_arg = if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
+        line_arg.value_parser([PossibleValue::new("vdd"), PossibleValue::new("usb")])
+    } else {
+        line_arg.value_parser([
             PossibleValue::new("aux"),
             PossibleValue::new("vdd"),
             PossibleValue::new("usb"),
         ])
-        .required(true);
+    };
+
     Command::new("upico")
         .about("uPico control app")
         .version(env!("CARGO_PKG_VERSION"))
@@ -64,10 +68,13 @@ fn cli() -> Command {
                 .about("Install firmware to Pico")
                 .arg_required_else_help(true)
                 .arg(arg!(<FIRMWARE> "Path to UF2 firmware file").required(true))
-                .arg(
+                .arg(if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
                     arg!(-p <PICO_PATH> "Path to mounted Pico disk")
-                        .default_value("/media/cpi/RPI-RP2"),
-                )
+                        .default_value("/media/pi/RPI-RP2")
+                } else {
+                    arg!(-p <PICO_PATH> "Path to mounted Pico disk")
+                        .default_value("/media/cpi/RPI-RP2")
+                })
                 .arg(mount_arg)
                 .arg(dev_arg),
         )
@@ -79,7 +86,11 @@ fn cli() -> Command {
                 .subcommand(Command::new("on").about("Power on").arg(line_arg.clone()))
                 .subcommand(Command::new("off").about("Power off").arg(line_arg.clone()))
                 .subcommand(Command::new("cycle").about("Power cycle").arg(line_arg))
-                .subcommand(Command::new("status").about("Power status")),
+                .subcommand(
+                    Command::new("status")
+                        .about("Power status")
+                        .hide(cfg!(any(target_arch = "arm", target_arch = "aarch64"))),
+                ),
         )
         .subcommand(Command::new("pinout").about("Print pinout diagram"))
 }
@@ -179,7 +190,7 @@ fn run() -> AppResult {
                 let line = parse_power_line(cmd)?;
                 Service::send(Request::PowerCycle(line))?;
             }
-            Some(("status", _)) => {
+            Some(("status", _)) if cfg!(not(any(target_arch = "arm", target_arch = "aarch64"))) => {
                 if let Response::PowerReport(report) = Service::send(Request::PowerStatus)? {
                     print_power_state("AUX", report.aux);
                     print_power_state("VDD", report.vdd);
