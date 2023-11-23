@@ -48,7 +48,7 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 ### Flash firmware
 
 1. `wget https://rptl.io/pico-blink`
-2. `upico install pico-blink` or `upico install -m pico-blink` if your system doesn't support removable media automount.
+2. `upico install pico-blink` or `upico install -m pico-blink` if automount is disabled for hot-plug devices.
 
 See other examples: https://github.com/raspberrypi/pico-examples
 
