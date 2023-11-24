@@ -34,10 +34,10 @@ pub mod platform {
     pub const PIN_PICO_BOOT: usize = 37;
     pub const PIN_VDD_EN: usize = 36;
     pub const PIN_USB_EN: usize = 31;
-     //TODO: fix pcb routing
-    pub const PIN_PICO_RUN: usize = 38;
+    //TODO: fix pcb routing
+    pub const PIN_PICO_RUN: usize = 42;
     pub const PIN_AUX_EN: usize = 40;
-    pub const PIN_AUX_OCP: usize = 39;
+    pub const PIN_AUX_OCP: usize = 36;
     pub const PIN_VDD_OCP: usize = 35;
     pub const PIN_USB_OCP: usize = 30;
 }
