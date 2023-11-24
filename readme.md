@@ -56,7 +56,7 @@ See other examples: https://github.com/raspberrypi/pico-examples
 
 <img width="500" src="docs/upico_hld.png" />
 
-### RP4040 Pinout
+### GPIO Header Pinout
 ```
 ╔══════╦══════╗
 ║ AUX  ║ AUX  ║
