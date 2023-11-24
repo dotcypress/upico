@@ -7,6 +7,7 @@
 uPico is a [RP2040](https://www.raspberrypi.com/products/rp2040/) powered expansion card designed to enhance the capabilities of [Clockwork's uConsole](https://www.clockworkpi.com/uconsole).
 
 ⚠️ Only R-01 and CM4 core are supported by control application.
+Work in progress for A04/A06 core modules.
 
 Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<sup>-18</sup> 🤓
 
