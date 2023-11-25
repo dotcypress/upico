@@ -7,12 +7,16 @@ impl Gpio {
     pub fn try_new() -> Result<Gpio, io::Error> {
         Self::set_pin_mode_out(platform::PIN_PICO_RUN, true)?;
         Self::set_pin_mode_out(platform::PIN_PICO_BOOT, true)?;
-        Self::set_pin_mode_out(platform::PIN_AUX_EN, false)?;
-        Self::set_pin_mode_out(platform::PIN_VDD_EN, false)?;
         Self::set_pin_mode_out(platform::PIN_USB_EN, false)?;
-        Self::set_pin_mode_in(platform::PIN_AUX_OCP)?;
-        Self::set_pin_mode_in(platform::PIN_VDD_OCP)?;
-        Self::set_pin_mode_in(platform::PIN_USB_OCP)?;
+        Self::set_pin_mode_out(platform::PIN_VDD_EN, false)?;
+        if platform::AUX_SWITCH {
+            Self::set_pin_mode_out(platform::PIN_AUX_EN, false)?;
+        }
+        if platform::OCP_REPORTING {
+            Self::set_pin_mode_in(platform::PIN_AUX_OCP)?;
+            Self::set_pin_mode_in(platform::PIN_VDD_OCP)?;
+            Self::set_pin_mode_in(platform::PIN_USB_OCP)?;
+        }
         Ok(Self {})
     }
 
@@ -32,9 +36,12 @@ impl Gpio {
 
     pub fn set_power_enabled(&mut self, line: PowerLine, enabled: bool) -> Result<(), io::Error> {
         match line {
-            PowerLine::Aux => Self::set_pin_state(platform::PIN_AUX_EN, !enabled),
             PowerLine::Vdd => Self::set_pin_state(platform::PIN_VDD_EN, !enabled),
             PowerLine::Usb => Self::set_pin_state(platform::PIN_USB_EN, !enabled),
+            PowerLine::Aux if platform::AUX_SWITCH => {
+                Self::set_pin_state(platform::PIN_AUX_EN, !enabled)
+            }
+            _ => Ok(()),
         }
     }
 
