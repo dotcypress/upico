@@ -11,6 +11,7 @@ edition = "2021"
 [dependencies]
 clap = "4.4.6"
 rmp-serde = "1.1.2"
+rusb = "0.9"
 serde = { version = "1.0.188", features = ["serde_derive"] }
 
 [features]

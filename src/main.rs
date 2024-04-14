@@ -1,5 +1,6 @@
 use clap::{builder::PossibleValue, *};
 use config::*;
+use extender::*;
 use gpio::*;
 use service::*;
 use std::path::Path;
@@ -7,18 +8,23 @@ use std::time::Duration;
 use std::*;
 
 mod config;
+mod extender;
 mod gpio;
 mod service;
 
 #[derive(Debug)]
 pub enum AppError {
     InvalidLine,
+    InvalidGpioLine,
+    InvalidAdcChannel,
     MountFailed,
     IoError(io::Error),
     ServiceError(io::Error),
     GpioError(io::Error),
     DecodeError(string::FromUtf8Error),
+    ParseIntError(num::ParseIntError),
     ProtocolError(rmp_serde::decode::Error),
+    UsbError(rusb::Error),
 }
 
 pub type AppResult = Result<(), AppError>;
@@ -27,12 +33,17 @@ fn main() {
     if let Err(err) = run() {
         match err {
             AppError::InvalidLine => println!("Invalid power line name"),
+            AppError::InvalidAdcChannel => println!("Invalid ADC channel"),
+            AppError::InvalidGpioLine => println!("Invalid GPIO number"),
             AppError::MountFailed => println!("Failed to mount Pico drive"),
             AppError::GpioError(err) => println!("GPIO error: {}", err),
             AppError::IoError(err) => println!("IO error: {}", err),
             AppError::ServiceError(err) => println!("Service error: {}", err),
             AppError::DecodeError(err) => println!("Decode error: {}", err),
             AppError::ProtocolError(err) => println!("Protocol error: {}", err),
+            AppError::UsbError(rusb::Error::NoDevice) => println!("Pico extender not found.\nCommand for flashing extender firmware: \"upico gpio install\"."),
+            AppError::UsbError(err) => println!("USB error: {}", err),
+            AppError::ParseIntError(err) => println!("Parse error: {}", err),
         };
     }
 }
@@ -66,6 +77,40 @@ fn cli() -> Command {
                 .about("Reset Pico and enter USB bootloader"),
         )
         .subcommand(
+            Command::new("gpio")
+                .about("GPIO utils")
+                .subcommand_required(true)
+                .arg_required_else_help(true)
+                .subcommand(
+                    Command::new("get")
+                        .arg(arg!([PIN] "GPIO pin number (0-15)."))
+                        .about("Print GPIO status"),
+                )
+                .subcommand(
+                    Command::new("set")
+                        .arg(
+                            arg!(<CONFIG> "Comma separated GPIO config (0=1,3=0,7=i,..).")
+                                .required(true),
+                        )
+                        .about("Set GPIO config"),
+                )
+                .subcommand(
+                    Command::new("install")
+                        .arg(
+                            arg!(-p <PICO_PATH> "Path to mounted Pico disk").default_value(
+                                if Path::new("/home/cpi").exists() {
+                                    "/media/cpi/RPI-RP2"
+                                } else {
+                                    "/media/pi/RPI-RP2"
+                                },
+                            ),
+                        )
+                        .arg(mount_arg.clone())
+                        .arg(dev_arg.clone())
+                        .about("Install GPIO extender firmware to Pico"),
+                ),
+        )
+        .subcommand(
             Command::new("install")
                 .about("Install firmware to Pico")
                 .arg_required_else_help(true)
@@ -92,11 +137,15 @@ fn cli() -> Command {
                 .subcommand(Command::new("cycle").about("Power cycle").arg(line_arg))
                 .subcommand(
                     Command::new("status")
-                        .about("Power status")
+                        .about("Print power status")
                         .hide(!platform::OCP_REPORTING),
                 ),
         )
-        .subcommand(Command::new("pinout").about("Print pinout diagram"))
+        .subcommand(
+            Command::new("pinout")
+                .arg(arg!(all: -a "Print pin functions"))
+                .about("Print pinout diagram"),
+        )
 }
 
 fn print_power_state(line: &str, state: PowerState) {
@@ -119,7 +168,7 @@ fn sleep(millis: u64) {
 }
 
 fn wait_for_path(path: &Path) {
-    for _ in 0..50 {
+    for _ in 0..100 {
         if path.exists() {
             sleep(200);
             break;
@@ -153,8 +202,12 @@ fn mount_pico(disk: &str) -> Result<String, AppError> {
 fn run() -> AppResult {
     match cli().get_matches().subcommand() {
         Some(("service", _)) => Service::start()?,
-        Some(("pinout", _)) => {
-            println!("{}", include_str!("pinout.ansi"));
+        Some(("pinout", cmd)) => {
+            if cmd.get_flag("all") {
+                println!("{}", include_str!("resources/pinout_full.ansi"));
+            } else {
+                println!("{}", include_str!("resources/pinout.ansi"));
+            }
         }
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;
@@ -199,6 +252,82 @@ fn run() -> AppResult {
                     print_power_state("VDD", report.vdd);
                     print_power_state("USB", report.usb);
                 }
+            }
+            _ => {}
+        },
+        Some(("gpio", cmd)) => match cmd.subcommand() {
+            Some(("set", cmd)) => {
+                let mut gpio_state = Extender::read_digital().map_err(AppError::UsbError)?;
+                if let Some(configs) = cmd.get_many::<String>("CONFIG") {
+                    for pin_config in configs {
+                        if let Some((pin, mode)) = pin_config.split_once('=') {
+                            let pin: u8 = pin.parse().map_err(AppError::ParseIntError)?;
+                            if pin >= 16 {
+                                return Err(AppError::InvalidGpioLine);
+                            }
+                            match mode {
+                                "i" => gpio_state.set_mode(pin, false),
+                                "0" => {
+                                    gpio_state.set_mode(pin, true);
+                                    gpio_state.set_level(pin, false);
+                                }
+                                "1" => {
+                                    gpio_state.set_mode(pin, true);
+                                    gpio_state.set_level(pin, true);
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+                }
+                Extender::write_digital(gpio_state).map_err(AppError::UsbError)?;
+            }
+            Some(("get", cmd)) => {
+                let gpio_state = Extender::read_digital().map_err(AppError::UsbError)?;
+                if let Some(pin) = cmd
+                    .get_one::<String>("PIN")
+                    .map(|s| s.parse::<u8>().unwrap_or_default())
+                {
+                    match pin {
+                        0..=15 => {
+                            let level = if gpio_state.get_level(pin) { "1" } else { "0" };
+                            println!("{}", level);
+                        }
+                        26..=29 => {
+                            let values = Extender::read_analog().map_err(AppError::UsbError)?;
+                            println!("{}", values[pin as usize - 26]);
+                        }
+                        _ => return Err(AppError::InvalidGpioLine),
+                    }
+                } else {
+                    for pin in 0..16 {
+                        let level = if gpio_state.get_level(pin) { "1" } else { "0" };
+                        let mode = if gpio_state.get_mode(pin) {
+                            "Output"
+                        } else {
+                            "Input"
+                        };
+                        println!("GPIO{}\t{}\t{}", pin, mode, level);
+                    }
+                    let values = Extender::read_analog().map_err(AppError::UsbError)?;
+                    for (idx, val) in values.iter().enumerate() {
+                        println!("GPIO{}\tAnalog\t{}", idx + 26, val);
+                    }
+                }
+            }
+            Some(("install", cmd)) => {
+                Service::send(Request::EnterBootloader)?;
+                let mut path = if cmd.get_flag("mount") {
+                    let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
+                    mount_pico(disk)?
+                } else {
+                    let path = cmd.get_one::<String>("PICO_PATH").unwrap().to_string();
+                    wait_for_path(Path::new(&path));
+                    path
+                };
+                path.push_str("/fw.uf2");
+                fs::write(path, include_bytes!("resources/extender.uf2"))
+                    .map_err(AppError::IoError)?;
             }
             _ => {}
         },

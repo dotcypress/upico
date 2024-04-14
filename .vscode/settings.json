@@ -1,0 +1,7 @@
+{
+  "rust-analyzer.check.allTargets": false,
+  "rust-analyzer.linkedProjects": [
+    "./Cargo.toml",
+    "./extender/Cargo.toml"
+  ]
+}
