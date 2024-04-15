@@ -71,7 +71,7 @@ mod app {
             sio.gpio_bank0,
             &mut resets,
         );
-
+        let led = pins.gpio25.into_push_pull_output();
         let adc = adc::Adc::new(ctx.device.ADC, &mut resets);
         let adc_pins = (
             adc::AdcPin::new(pins.gpio26),
@@ -122,7 +122,7 @@ mod app {
             singleton!(: UsbBusAllocator<UsbBus> = UsbBusAllocator::new(usb_bus))
                 .expect("USB init failed");
 
-        let upico = UpicoClass::new(usb_bus, rx, tx, adc, adc_pins);
+        let upico = UpicoClass::new(usb_bus, rx, tx, adc, adc_pins, led);
         let usb_dev = UsbDeviceBuilder::new(usb_bus, UsbVidPid(0x1209, 0xbc07))
             .manufacturer("vitaly.codes")
             .product("uPico GPIO Extender")

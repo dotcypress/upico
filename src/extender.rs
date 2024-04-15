@@ -40,7 +40,7 @@ pub struct Extender;
 
 impl Extender {
     pub fn read_analog() -> rusb::Result<[u16; 4]> {
-        let dev = rusb::open_device_with_vid_pid(0x1209, 0xbc07).ok_or(rusb::Error::NoDevice)?;
+        let dev = Self::open_device()?;
         let mut scratch = [0; 8];
         let req_type = request_type(Direction::In, RequestType::Vendor, Recipient::Device);
         dev.read_control(
@@ -60,7 +60,7 @@ impl Extender {
     }
 
     pub fn read_digital() -> rusb::Result<GpioState> {
-        let dev = rusb::open_device_with_vid_pid(0x1209, 0xbc07).ok_or(rusb::Error::NoDevice)?;
+        let dev = Self::open_device()?;
         let mut scratch = [0; 8];
         let req_type = request_type(Direction::In, RequestType::Vendor, Recipient::Device);
         dev.read_control(
@@ -79,7 +79,7 @@ impl Extender {
     }
 
     pub fn write_digital(state: GpioState) -> rusb::Result<()> {
-        let dev = rusb::open_device_with_vid_pid(0x1209, 0xbc07).ok_or(rusb::Error::NoDevice)?;
+        let dev = Self::open_device()?;
         let mut payload = [0; 8];
         payload[0..4].copy_from_slice(&state.levels.to_le_bytes());
         payload[4..8].copy_from_slice(&state.pin_dirs.to_le_bytes());
@@ -93,5 +93,23 @@ impl Extender {
             Duration::from_millis(100),
         )?;
         Ok(())
+    }
+
+    pub fn set_led(on: bool) -> rusb::Result<()> {
+        let dev = Self::open_device()?;
+        let req_type = request_type(Direction::Out, RequestType::Vendor, Recipient::Device);
+        dev.write_control(
+            req_type,
+            0x01,
+            on as _,
+            0x00,
+            &[],
+            Duration::from_millis(100),
+        )?;
+        Ok(())
+    }
+
+    fn open_device() -> rusb::Result<DeviceHandle<GlobalContext>> {
+        rusb::open_device_with_vid_pid(0x1209, 0xbc07).ok_or(rusb::Error::NoDevice)
     }
 }

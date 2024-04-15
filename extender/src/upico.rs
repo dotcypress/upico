@@ -3,10 +3,13 @@ use rp2040_hal::{
     adc::*,
     gpio::{self, bank0::*, *},
     pac::PIO0,
-    pio::*,
+    pio,
     Adc,
 };
+use embedded_hal::digital::v2::OutputPin;
 use usb_device::{class_prelude::*, control::*};
+
+pub type Led = Pin<Gpio25, FunctionSio<SioOutput>, hal::gpio::PullDown>;
 
 pub type AdcPins = (
     AdcPin<gpio::Pin<Gpio26, FunctionNull, PullDown>>,
@@ -19,22 +22,25 @@ pub struct UpicoClass {
     adc: Adc,
     adc_pins: AdcPins,
     iface: InterfaceNumber,
-    rx: Rx<(PIO0, SM0)>,
-    tx: Tx<(PIO0, SM0)>,
+    led: Led,
+    rx: pio::Rx<(PIO0, pio::SM0)>,
+    tx: pio::Tx<(PIO0, pio::SM0)>,
     pin_dirs: u32,
 }
 
 impl UpicoClass {
     pub fn new<B: UsbBus>(
         alloc: &UsbBusAllocator<B>,
-        rx: Rx<(PIO0, SM0)>,
-        tx: Tx<(PIO0, SM0)>,
+        rx: pio::Rx<(PIO0, pio::SM0)>,
+        tx: pio::Tx<(PIO0, pio::SM0)>,
         adc: Adc,
         adc_pins: AdcPins,
+        led: Led,
     ) -> UpicoClass {
         Self {
             adc,
             adc_pins,
+            led,
             rx,
             tx,
             pin_dirs: 0,
@@ -67,6 +73,10 @@ impl<B: UsbBus> UsbClass<B> for UpicoClass {
                 self.tx.write(0b01100000_10000000);
                 self.tx.write(self.pin_dirs);
 
+                xfer.accept()
+            }
+            0x01 => {
+                self.led.set_state(PinState::from(req.value != 0)).unwrap();
                 xfer.accept()
             }
             _ => xfer.reject(),

@@ -17,6 +17,7 @@ pub enum AppError {
     InvalidLine,
     InvalidGpioLine,
     InvalidAdcChannel,
+    InvalidLedMode,
     MountFailed,
     IoError(io::Error),
     ServiceError(io::Error),
@@ -34,6 +35,7 @@ fn main() {
         match err {
             AppError::InvalidLine => println!("Invalid power line name"),
             AppError::InvalidAdcChannel => println!("Invalid ADC channel"),
+            AppError::InvalidLedMode => println!("Invalid LED mode"),
             AppError::InvalidGpioLine => println!("Invalid GPIO number"),
             AppError::MountFailed => println!("Failed to mount Pico drive"),
             AppError::GpioError(err) => println!("GPIO error: {}", err),
@@ -93,6 +95,11 @@ fn cli() -> Command {
                                 .required(true),
                         )
                         .about("Set GPIO config"),
+                )
+                .subcommand(
+                    Command::new("led")
+                        .arg(arg!(<STATUS> "LED status (on, off).").required(true))
+                        .about("Set LED status"),
                 )
                 .subcommand(
                     Command::new("install")
@@ -283,13 +290,14 @@ fn run() -> AppResult {
                 Extender::write_digital(gpio_state).map_err(AppError::UsbError)?;
             }
             Some(("get", cmd)) => {
-                let gpio_state = Extender::read_digital().map_err(AppError::UsbError)?;
                 if let Some(pin) = cmd
                     .get_one::<String>("PIN")
                     .map(|s| s.parse::<u8>().unwrap_or_default())
                 {
                     match pin {
                         0..=15 => {
+                            let gpio_state =
+                                Extender::read_digital().map_err(AppError::UsbError)?;
                             let level = if gpio_state.get_level(pin) { "1" } else { "0" };
                             println!("{}", level);
                         }
@@ -300,6 +308,7 @@ fn run() -> AppResult {
                         _ => return Err(AppError::InvalidGpioLine),
                     }
                 } else {
+                    let gpio_state = Extender::read_digital().map_err(AppError::UsbError)?;
                     for pin in 0..16 {
                         let level = if gpio_state.get_level(pin) { "1" } else { "0" };
                         let mode = if gpio_state.get_mode(pin) {
@@ -315,6 +324,15 @@ fn run() -> AppResult {
                     }
                 }
             }
+            Some(("led", cmd)) => match cmd.get_one::<String>("STATUS") {
+                Some(status) => match status.as_str() {
+                    "on" => Extender::set_led(true).map_err(AppError::UsbError)?,
+                    "off" => Extender::set_led(false).map_err(AppError::UsbError)?,
+                    _ => return Err(AppError::InvalidLedMode),
+                },
+                _ => return Err(AppError::InvalidLedMode),
+            },
+
             Some(("install", cmd)) => {
                 Service::send(Request::EnterBootloader)?;
                 let mut path = if cmd.get_flag("mount") {
