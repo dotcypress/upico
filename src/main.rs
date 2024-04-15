@@ -150,7 +150,7 @@ fn cli() -> Command {
         )
         .subcommand(
             Command::new("pinout")
-                .arg(arg!(all: -a "Print pin functions"))
+                .arg(arg!(full: -f "Print pin functions"))
                 .about("Print pinout diagram"),
         )
 }
@@ -210,7 +210,7 @@ fn run() -> AppResult {
     match cli().get_matches().subcommand() {
         Some(("service", _)) => Service::start()?,
         Some(("pinout", cmd)) => {
-            if cmd.get_flag("all") {
+            if cmd.get_flag("full") {
                 println!("{}", include_str!("resources/pinout_full.ansi"));
             } else {
                 println!("{}", include_str!("resources/pinout.ansi"));

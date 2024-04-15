@@ -44,7 +44,9 @@ Second project name is `atto`, cause 10<sup>−6</sup> * 10<sup>-12</sup> = 10<s
 5. Install service: `sudo cp upico.service /etc/systemd/system/`
 6. Enable service: `sudo systemctl enable upico`
 7. Start service: `sudo systemctl start upico`
-8. Print help: `upico help`
+8. Setup uPico extender USB device: `echo 'SUBSYSTEM=="usb",ATTRS{idVendor}=="1209",ATTRS{idProduct}=="bc07",MODE="0660",GROUP="plugdev"' > /etc/udev/rules.d/50-upico-permissions.rules`
+9. Reload udev: `udevadm control --reload-rules`
+10. Print help: `upico help`
 
 ### Flash firmware
 
