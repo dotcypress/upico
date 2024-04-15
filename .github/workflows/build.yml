@@ -44,7 +44,7 @@ jobs:
           command: install
           args: --git https://github.com/cross-rs/cross cross
       - name: R-01 Build
-        run: cross build --release --target=riscv64gc-unknown-linux-gnu
+        run: cross build --release --target=riscv64gc-unknown-linux-gnu --no-default-features --features r01
       - name: Copy R-01 binary
         run : cp -f ./target/riscv64gc-unknown-linux-gnu/release/upico upico
       - name: Compress R-01 Build

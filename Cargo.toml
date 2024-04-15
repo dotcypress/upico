@@ -15,7 +15,7 @@ rusb = "0.9"
 serde = { version = "1.0.188", features = ["serde_derive"] }
 
 [features]
-default = ["r01"]
+default = ["cm4"]
 r01 = []
 cm4 = []
 a06 = []
