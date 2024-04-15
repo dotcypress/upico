@@ -92,6 +92,7 @@ fn cli() -> Command {
                     Command::new("set")
                         .arg(
                             arg!(<CONFIG> "Comma separated GPIO config (0=1,3=0,7=i,..).")
+                                .value_delimiter(',')
                                 .required(true),
                         )
                         .about("Set GPIO config"),
