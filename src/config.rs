@@ -14,14 +14,14 @@ pub mod platform {
 
 #[cfg(feature = "cm4")]
 pub mod platform {
+    pub const AUX_SWITCH: bool = true;
     pub const OCP_REPORTING: bool = false;
-    pub const AUX_SWITCH: bool = false;
     pub const PIN_PICO_BOOT: usize = 27;
     pub const PIN_VDD_EN: usize = 26;
     pub const PIN_USB_EN: usize = 21;
+    pub const PIN_PICO_RUN: usize = 6;
+    pub const PIN_AUX_EN: usize = 16;
     //TODO: fix pcb routing
-    pub const PIN_PICO_RUN: usize = 22;
-    pub const PIN_AUX_EN: usize = 23;
     pub const PIN_AUX_OCP: usize = 29;
     pub const PIN_VDD_OCP: usize = 25;
     pub const PIN_USB_OCP: usize = 20;

@@ -68,11 +68,9 @@ impl<B: UsbBus> UsbClass<B> for UpicoClass {
                 let state = u32::from_le_bytes(xfer.data()[0..4].try_into().unwrap());
                 self.tx.write(0b01100000_00000000);
                 self.tx.write(state);
-
                 self.pin_dirs = u32::from_le_bytes(xfer.data()[4..8].try_into().unwrap());
                 self.tx.write(0b01100000_10000000);
                 self.tx.write(self.pin_dirs);
-
                 xfer.accept()
             }
             0x01 => {

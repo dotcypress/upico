@@ -34972,7 +34972,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "A04/A06   "
+	(gr_text "CM4"
 		(at 62.970156 113.09376 0)
 		(layer "F.SilkS" knockout)
 		(uuid "c7b887b0-9c62-497e-b5c2-bd9dc8fe502a")
@@ -34985,7 +34985,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "R01/CM4"
+	(gr_text "R01"
 		(at 62.9666 118.3386 0)
 		(layer "F.SilkS" knockout)
 		(uuid "d0788985-f076-4320-a2f3-5a6b0c6acd27")

@@ -88,7 +88,6 @@ See other examples: https://github.com/raspberrypi/pico-examples
 
 ### CM4 core & uPico PCB rev:0x02
 
-* External 5V(AUX) programmable switch isn't supported, 5V is always present on pin header.
 * Overcurrent reporting feature isn't supported.
 
 ## License

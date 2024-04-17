@@ -1,4 +1,5 @@
 use clap::{builder::PossibleValue, *};
+use clap_complete::{generate, Shell};
 use config::*;
 use extender::*;
 use gpio::*;
@@ -77,6 +78,15 @@ fn cli() -> Command {
                 .arg(mount_arg.clone())
                 .arg(dev_arg.clone())
                 .about("Reset Pico and enter USB bootloader"),
+        )
+        .subcommand(
+            Command::new("generate")
+                .arg(
+                    Arg::new("generator")
+                        .required(true)
+                        .value_parser(value_parser!(Shell)),
+                )
+                .about("Generate shell completions"),
         )
         .subcommand(
             Command::new("gpio")
@@ -160,12 +170,16 @@ fn print_power_state(line: &str, state: PowerState) {
     println!(
         "{line}:  {} {}",
         if state.on { "ON " } else { "OFF" },
-        if state.ocp { "[OCP]" } else { "" }
+        if platform::OCP_REPORTING && state.ocp {
+            "[OCP]"
+        } else {
+            ""
+        }
     );
 }
 
-fn parse_power_line(cmd: &ArgMatches) -> Result<PowerLine, AppError> {
-    cmd.get_one::<String>("LINE")
+fn parse_power_line(args: &ArgMatches) -> Result<PowerLine, AppError> {
+    args.get_one::<String>("LINE")
         .unwrap()
         .try_into()
         .map_err(|_| AppError::InvalidLine)
@@ -210,8 +224,13 @@ fn mount_pico(disk: &str) -> Result<String, AppError> {
 fn run() -> AppResult {
     match cli().get_matches().subcommand() {
         Some(("service", _)) => Service::start()?,
-        Some(("pinout", cmd)) => {
-            if cmd.get_flag("full") {
+        Some(("generate", args)) => {
+            if let Some(generator) = args.get_one::<Shell>("generator") {
+                generate(*generator, &mut cli(), "upico", &mut io::stdout());
+            }
+        }
+        Some(("pinout", args)) => {
+            if args.get_flag("full") {
                 println!("{}", include_str!("resources/pinout_full.ansi"));
             } else {
                 println!("{}", include_str!("resources/pinout.ansi"));
@@ -220,53 +239,55 @@ fn run() -> AppResult {
         Some(("reset", _)) => {
             Service::send(Request::Reset)?;
         }
-        Some(("boot", cmd)) => {
+        Some(("boot", args)) => {
             Service::send(Request::EnterBootloader)?;
-            if cmd.get_flag("mount") {
-                let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
+            if args.get_flag("mount") {
+                let disk = args.get_one::<String>("PICO_DEV").unwrap();
                 mount_pico(disk)?;
             }
         }
-        Some(("install", cmd)) => {
+        Some(("install", args)) => {
             Service::send(Request::EnterBootloader)?;
-            let mut path = if cmd.get_flag("mount") {
-                let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
+            let mut path = if args.get_flag("mount") {
+                let disk = args.get_one::<String>("PICO_DEV").unwrap();
                 mount_pico(disk)?
             } else {
-                let path = cmd.get_one::<String>("PICO_PATH").unwrap().to_string();
+                let path = args.get_one::<String>("PICO_PATH").unwrap().to_string();
                 wait_for_path(Path::new(&path));
                 path
             };
             path.push_str("/fw.uf2");
-            let firmware = cmd.get_one::<String>("FIRMWARE").unwrap();
+            let firmware = args.get_one::<String>("FIRMWARE").unwrap();
             fs::copy(firmware, path).map_err(AppError::IoError)?;
         }
-        Some(("power", cmd)) => match cmd.subcommand() {
-            Some(("on", cmd)) => {
-                let line = parse_power_line(cmd)?;
+        Some(("power", args)) => match args.subcommand() {
+            Some(("on", args)) => {
+                let line = parse_power_line(args)?;
                 Service::send(Request::PowerOn(line))?;
             }
-            Some(("off", cmd)) => {
-                let line = parse_power_line(cmd)?;
+            Some(("off", args)) => {
+                let line = parse_power_line(args)?;
                 Service::send(Request::PowerOff(line))?;
             }
-            Some(("cycle", cmd)) => {
-                let line = parse_power_line(cmd)?;
+            Some(("cycle", args)) => {
+                let line = parse_power_line(args)?;
                 Service::send(Request::PowerCycle(line))?;
             }
-            Some(("status", _)) if platform::OCP_REPORTING => {
+            Some(("status", _)) => {
                 if let Response::PowerReport(report) = Service::send(Request::PowerStatus)? {
-                    print_power_state("AUX", report.aux);
+                    if platform::AUX_SWITCH {
+                        print_power_state("AUX", report.aux);
+                    }
                     print_power_state("VDD", report.vdd);
                     print_power_state("USB", report.usb);
                 }
             }
             _ => {}
         },
-        Some(("gpio", cmd)) => match cmd.subcommand() {
-            Some(("set", cmd)) => {
+        Some(("gpio", args)) => match args.subcommand() {
+            Some(("set", args)) => {
                 let mut gpio_state = Extender::read_digital().map_err(AppError::UsbError)?;
-                if let Some(configs) = cmd.get_many::<String>("CONFIG") {
+                if let Some(configs) = args.get_many::<String>("CONFIG") {
                     for pin_config in configs {
                         if let Some((pin, mode)) = pin_config.split_once('=') {
                             let pin: u8 = pin.parse().map_err(AppError::ParseIntError)?;
@@ -290,8 +311,8 @@ fn run() -> AppResult {
                 }
                 Extender::write_digital(gpio_state).map_err(AppError::UsbError)?;
             }
-            Some(("get", cmd)) => {
-                if let Some(pin) = cmd
+            Some(("get", args)) => {
+                if let Some(pin) = args
                     .get_one::<String>("PIN")
                     .map(|s| s.parse::<u8>().unwrap_or_default())
                 {
@@ -325,7 +346,7 @@ fn run() -> AppResult {
                     }
                 }
             }
-            Some(("led", cmd)) => match cmd.get_one::<String>("STATUS") {
+            Some(("led", args)) => match args.get_one::<String>("STATUS") {
                 Some(status) => match status.as_str() {
                     "on" => Extender::set_led(true).map_err(AppError::UsbError)?,
                     "off" => Extender::set_led(false).map_err(AppError::UsbError)?,
@@ -334,13 +355,13 @@ fn run() -> AppResult {
                 _ => return Err(AppError::InvalidLedMode),
             },
 
-            Some(("install", cmd)) => {
+            Some(("install", args)) => {
                 Service::send(Request::EnterBootloader)?;
-                let mut path = if cmd.get_flag("mount") {
-                    let disk = cmd.get_one::<String>("PICO_DEV").unwrap();
+                let mut path = if args.get_flag("mount") {
+                    let disk = args.get_one::<String>("PICO_DEV").unwrap();
                     mount_pico(disk)?
                 } else {
-                    let path = cmd.get_one::<String>("PICO_PATH").unwrap().to_string();
+                    let path = args.get_one::<String>("PICO_PATH").unwrap().to_string();
                     wait_for_path(Path::new(&path));
                     path
                 };
