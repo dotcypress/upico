@@ -65,6 +65,11 @@ fn cli() -> Command {
         line_arg.value_parser([PossibleValue::new("vdd"), PossibleValue::new("usb")])
     };
 
+    let mount_path: &'static str = {
+        let username = env::var("USER").unwrap_or("pi".into());
+        Box::leak(format!("/media/{username}/RPI-RP2").into_boxed_str())
+    };
+
     Command::new("upico")
         .about("uPico control app")
         .version(env!("CARGO_PKG_VERSION"))
@@ -115,13 +120,8 @@ fn cli() -> Command {
                 .subcommand(
                     Command::new("install")
                         .arg(
-                            arg!(-p <PICO_PATH> "Path to mounted Pico disk").default_value(
-                                if Path::new("/home/cpi").exists() {
-                                    "/media/cpi/RPI-RP2"
-                                } else {
-                                    "/media/pi/RPI-RP2"
-                                },
-                            ),
+                            arg!(-p <PICO_PATH> "Path to mounted Pico disk")
+                                .default_value(mount_path),
                         )
                         .arg(mount_arg.clone())
                         .arg(dev_arg.clone())
@@ -133,15 +133,7 @@ fn cli() -> Command {
                 .about("Install firmware to Pico")
                 .arg_required_else_help(true)
                 .arg(arg!(<FIRMWARE> "Path to UF2 firmware file").required(true))
-                .arg(
-                    arg!(-p <PICO_PATH> "Path to mounted Pico disk").default_value(
-                        if Path::new("/home/cpi").exists() {
-                            "/media/cpi/RPI-RP2"
-                        } else {
-                            "/media/pi/RPI-RP2"
-                        },
-                    ),
-                )
+                .arg(arg!(-p <PICO_PATH> "Path to mounted Pico disk").default_value(mount_path))
                 .arg(mount_arg)
                 .arg(dev_arg),
         )
