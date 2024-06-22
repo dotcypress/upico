@@ -17,10 +17,11 @@ serde = { version = "1.0.188", features = ["serde_derive"] }
 
 [features]
 default = ["cm4"]
-r01 = []
-cm4 = []
-a06 = []
 a04 = []
+a06 = []
+cm4 = []
+cm4-bookworm = []
+r01 = []
 
 [profile.release]
 strip = true

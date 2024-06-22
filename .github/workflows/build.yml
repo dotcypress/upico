@@ -75,6 +75,22 @@ jobs:
             ./upico.service
             ./upico
           outPath: upico_${{ github.ref_name }}.cm4.tar.gz
+      - name: CM4 Bookworm Build
+        run: cross build --release --target=armv7-unknown-linux-musleabihf --no-default-features --features cm4-bookworm
+      - name: Copy CM4 Bookworm binary
+        run : cp -f ./target/armv7-unknown-linux-musleabihf/release/upico upico
+      - name: Compress CM4 Bookworm Build
+        uses: a7ul/tar-action@v1.1.0
+        with:
+          command: c
+          files: |
+            ./readme.md
+            ./LICENSE-MIT
+            ./LICENSE-APACHE
+            ./install.sh
+            ./upico.service
+            ./upico
+          outPath: upico_${{ github.ref_name }}.cm4-bookworm.tar.gz
       - name: A06 Build
         run: cross build --release --target=armv7-unknown-linux-musleabihf --no-default-features --features a06
       - name: Copy A06 binary
@@ -104,4 +120,5 @@ jobs:
           files: |
             upico_${{ github.ref_name }}.r01.tar.gz
             upico_${{ github.ref_name }}.cm4.tar.gz
+            upico_${{ github.ref_name }}.cm4-bookworm.tar.gz
             upico_${{ github.ref_name }}.a06.tar.gz
